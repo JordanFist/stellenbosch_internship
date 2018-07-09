@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-public class UseArgument {
+public class shuffleArray {
 	public static void displayTab(int tab[]){
 		for (int i = 0; i < 10; ++i)
 			System.out.println(tab[i]);
