@@ -1,0 +1,44 @@
+#include "server.h"
+#include <stdio.h>
+
+
+unsigned int identity2;
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+char const *get_player_name()
+{
+  char const* name ="Amélie";
+  return name;
+  
+}
+
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+void initialize(unsigned int id,unsigned int n_players){
+  identity2=id;
+  printf("Initialisation du client 2 \n");
+}
+
+
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+struct move play(enum card_id card,struct move const previous_moves[], size_t n_moves){
+ struct move move;
+  struct position pos;
+  pos.x= 4;
+  pos.y=4;
+  enum action check=VALID;
+  
+  move.player=identity2;
+  move.card= card;
+  move.dir=NORTH;
+  move.place= POS_NORTH;
+  move.onto=pos;
+  move.check=check;
+  for (size_t i = 0; i < n_moves; i++) {
+    printf("%d \n",previous_moves[i].player);
+  }
+  return move; 
+}
+#pragma GCC diagnostic pop
+void finalize(){
+  printf("finalisation du jeu du client 2 \n");
+}

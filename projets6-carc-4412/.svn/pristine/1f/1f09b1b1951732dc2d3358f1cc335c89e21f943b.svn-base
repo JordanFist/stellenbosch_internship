@@ -1,0 +1,130 @@
+#include <set_graph.h>
+#include <server.h>
+#include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+/*POUR L'AFFICHAGE*/
+
+char FAIL[]="\033[31;1mFAIL\033[0m";
+char PASSED[]="\033[32;1mPASSED\033[0m"; 
+
+struct move m1 = {0, 0, 0, {0, 0}, 0, 0};
+struct move m2 = {1, 1, 1, {1, 1}, 1, 1};
+struct move m3 = {0, 2, 2, {2, 2}, 0, 2};
+struct move m4 = {1, 3, 3, {3, 3}, 0, 3};
+struct move m5 = {0, 4, 4, {4, 4}, 0, 4};
+struct move m6 = {0, 4, 23, {0, -1}, 0, 5};
+struct move m7 = {0, 6, 23, {2, 1}, 0, 6};
+struct move m8 = {0, 7, 8, {4, 5}, 1, 7};
+
+void test_init_graph() {
+  printf("Test de init_graph()............. ");
+  
+  struct graph *g = init_graph();
+  if(g->count_nodes == 0)
+    printf("%s\n",PASSED);
+  else
+    printf("%s\n",FAIL);
+  free_graph(g);
+
+}
+
+void print(struct tile* tile){
+  for (int i=0 ;i<NUMBER_OF_DIRECTIONS; i++)
+    printf("%d ",tile->table[i].land_type);
+  printf("\n");
+}
+
+void test_is_playable() {
+  printf("Test de is_playable............. ");
+
+  struct graph *g = init_graph();
+  add_tile(g, &m2);
+  add_tile(g, &m3);
+  add_tile(g, &m4);
+  add_tile(g, &m5);
+  int res = is_playable(g, CARD_CITY_TUNNEL_SHLD);
+  assert(res == TRUE);
+
+  res = is_playable(g, CARD_JUNCTION_FOUR);
+  assert(res == FALSE);
+  free_graph(g);
+
+  printf("%s\n",PASSED);
+}
+
+void test_valid_move_card() {
+  printf("Test valid_move_card ............. ");
+  
+  struct graph *g = init_graph();
+  add_tile(g, &m3);
+  add_tile(g, &m5);
+  int res = valid_move_card(g, &m7);
+  assert(res == FALSE);
+  res = valid_move_card(g, &m8);
+  assert(res == TRUE);
+  
+  free_graph(g);
+  printf("%s\n",PASSED);
+}
+
+void test_find_tile() {
+  printf("Test de test_find_tile.......... ");
+
+  struct graph *g = init_graph();
+  add_tile(g, &m1);
+  add_tile(g, &m2);
+  add_tile(g, &m3);
+  add_tile(g, &m4);
+
+  struct tile *t1 = find_tile(g, &m1.onto);
+  struct tile *t2 = find_tile(g, &m2.onto);
+  struct tile *t3 = find_tile(g, &m3.onto);
+  struct tile *t4 = find_tile(g, &m4.onto);
+  struct tile *t5 = find_tile(g, &m5.onto);
+  assert(t1->pos.x == 0 && t1->pos.y == 0);
+  assert(t2 == NULL);
+  assert(t3->pos.x == 2 && t3->pos.y == 2);
+  assert(t4 == NULL);
+  assert(t5 == NULL);
+  
+  free_graph(g);
+  printf("%s\n", PASSED);
+}
+
+void test_add_tile() {
+  printf("Test de add_tile......... ");
+
+  struct graph *g = init_graph();
+  int res = add_tile(g, &m1);
+  add_tile(g, &m2);
+  add_tile(g, &m6);
+
+  assert(res == EXIT_SUCCESS);
+  assert(find_tile(g, &m1.onto) != NULL);
+  assert(find_tile(g, &m2.onto) == NULL);
+  assert(find_tile(g, &m3.onto) == NULL);
+  
+  assert(g->nodes[0]->neighbour[0] == NULL);
+  assert(g->nodes[0]->neighbour[1] == NULL);
+  assert(g->nodes[0]->neighbour[2] != NULL);
+  assert(g->nodes[0]->neighbour[3] == NULL);
+  assert(g->nodes[1]->neighbour[0] != NULL);
+  assert(g->nodes[1]->neighbour[1] == NULL);
+  assert(g->nodes[1]->neighbour[2] == NULL);
+  assert(g->nodes[1]->neighbour[3] == NULL);
+  
+  free_graph(g);
+  printf("%s\n", PASSED);
+}
+
+int main () {
+  test_init_graph();
+  test_is_playable();
+  test_valid_move_card();
+  test_find_tile();
+  test_add_tile();
+  
+  return EXIT_SUCCESS;
+}

@@ -1,0 +1,14 @@
+Rapport : 
+mettre le .tex et pas le pdf
+
+0) Regler le probleme
+
+1) Faire le README.txt
+
+2) Embelir le code + mettre des commentaires
+
+3) Faire un fichier display.c pour afficher nom des cartes etc
+
+4) check valgrind
+
+5) finir les fonctions tests

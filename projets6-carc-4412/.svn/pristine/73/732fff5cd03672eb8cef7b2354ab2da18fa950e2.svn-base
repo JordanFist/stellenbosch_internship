@@ -1,0 +1,127 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <set_graph.h>
+
+struct graph* init_graph() {
+  struct graph *g = (struct graph *) malloc(sizeof(struct graph));
+  if (g == NULL)
+    exit(1);
+  g->count_nodes = 0;
+  return g;
+}
+
+boolean is_connectable(struct graph *g, struct tile *t) {
+  struct position pos;
+  int cpt;
+  for (int i = 0; i < SIDES; ++i) { 
+    for (int j = 0; j < SIDES; ++j) {
+      pos = neighbour_position(tile->pos, j);
+      if (match_card(t, find_tile(g, pos), j) == TRUE)
+	++cpt;
+    }
+    if (cpt == SIDES) {
+      t->orientation = i;
+      return TRUE;
+    }
+    cpt = 0;
+    rotation(t, WEST);
+  }
+  return FALSE;
+}
+
+
+
+//fonction qui verifie que la carte est jouable quelque part su le graphe
+boolean is_playable(struct graph* g, enum card_id card) {
+  struct position pos = {0,0};//les coordonnées n'ont pas d'importance à ce stade 
+  struct tile *tile = init_tile(card, NORTH, pos);
+  for (int i = 0 ; i < g->count_nodes ; i++) {
+    for (int j = 0; j < NEIGHBOUR_CARDS; j++) {
+      if((is_empty_tile(compute_neighbour(g->nodes[i], j)) == TRUE) && (is_connectable(g->nodes[i], tile, j) == TRUE)) {
+	free_tile(tile);
+	return TRUE;
+      }
+    }
+  }
+  free_tile(tile);
+  return FALSE;
+}
+
+struct position neighbour_position(struct position *p, enum direction d) {
+  struct position pos = {p->x, p->y};
+  if (d == NORTH) 
+    ++pos.y;
+  if (d == WEST) 
+    --pos.x;
+  if (d == SOUTH) 
+    --pos.y;
+  if (d == EAST) 
+    ++pos.x;
+  return pos;
+}
+
+//fontion qui verifie que le coup joué est valide ou pas 
+boolean valid_move_card(struct graph *g, struct move *m) {
+  int cpt = 0;
+  struct tile *tile = init_tile(m->card, m->dir, m->onto);
+  struct position pos;
+  for (int i = 0; i < NEIGHBOUR_CARDS; ++i) {
+    pos = neighbour_position(&m->onto, i);
+    //if (find_tile(g, &pos) != NULL)
+    //printf("vmc %d \tx : %d \ty : %d\n",i, find_tile(g, &pos)->pos.x, find_tile(g, &pos)->pos.y);
+    if (match_card(tile, find_tile(g, &pos), i) == TRUE) {
+      printf("%d\n", i);
+      ++cpt;
+    }
+  }
+  if (cpt == SIDES) {
+    m->check = VALID;
+    free_tile(tile);
+    return TRUE;
+  }
+  m->check = FAILED;
+  free_tile(tile);
+  return FALSE;
+}
+
+struct tile *find_tile(struct graph *g, struct position *p) {
+  for (int i = 0; i < g->count_nodes; ++i) {
+    if (g->nodes[i]->pos.x == p->x && g->nodes[i]->pos.y == p->y)
+      return g->nodes[i];
+  }
+  return NULL;
+}
+
+int add_tile(struct graph *g, struct move const *m) {
+  struct tile *tile_add = init_tile(m->card, m->dir, m->onto);
+  int offsetx[] = {0, -1, 0, 1};
+  int offsety[] = {1, 0, -1, 0};
+  struct position pos;
+  struct tile *t_neighbour;
+  if (m->check == VALID) {
+    g->nodes[g->count_nodes] = tile_add;
+    for (int i = 0 ; i < NEIGHBOUR_CARDS; i++) {
+      pos.x = m->onto.x + offsetx[i];
+      pos.y = m->onto.y + offsety[i];
+      //pos = neighbour_position(&pos, i);
+      tile_add->neighbour[i] = find_tile(g, &pos); 
+      t_neighbour = compute_neighbour(tile_add, i);
+      if (t_neighbour != NULL)
+	t_neighbour->neighbour[opposite_face(i)] = tile_add;
+    }
+    ++g->count_nodes;
+    return EXIT_SUCCESS; 
+  } 
+  free(tile_add);
+  return EXIT_FAILURE;
+}
+
+void free_graph(struct graph *g) {
+  for (int i = 0; i < g->count_nodes; ++i)
+    free(g->nodes[i]);
+  free(g);
+}
+
+
+
+

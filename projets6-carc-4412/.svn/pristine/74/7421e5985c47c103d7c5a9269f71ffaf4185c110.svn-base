@@ -1,0 +1,12 @@
+Rapport : 
+mettre le .tex et pas le pdf
+
+
+1) Encore besoin de la struct pos en argument d'init tile pq ne pas mettre {0, 0} dans la fonction ?
+
+2) utilité de dir dans tile ?
+
+3) finir fonction test de set_graph et revoir is_connectable dans test_graph.c
+
+4) regler le segfault dans le server.c
+

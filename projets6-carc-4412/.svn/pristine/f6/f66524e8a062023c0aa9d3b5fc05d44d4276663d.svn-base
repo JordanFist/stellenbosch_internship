@@ -1,0 +1,130 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <dlfcn.h>
+#include <time.h>
+#include <server.h>
+#include <deck.h>
+#include <moves.h>
+#include <graph.h>
+#include <set_graph.h>
+#include <player.h>
+
+void *sym(void *p, char *str) {
+  void *val = dlsym(p, str);
+  if (val == NULL) {
+    printf("\nERREUR FUNC %s %s\n", str, dlerror());
+    exit(1);
+  }
+  return val;
+}
+
+//fonction qui permet de charger les bibliothèques client1.so et client2.so
+void *open(const char *str) {
+  void *retval = dlopen(str, RTLD_NOW); 
+  if (retval == NULL){
+    printf("\nERREUR LIB %s %s\n", str, dlerror());
+    exit(1);
+  }
+  return retval; 
+}
+
+//fonction qui permet le chargement des fonctions (récupération des adresses des fonctions et stockage dans une structure player_base (définie dans "server.h")
+
+void load_functions(void *p, struct player_base *base) {  
+   base->initialize = sym(p, "initialize"); //dlsym est une fonction qui prend un parametre un pointeur ainsi que le nom de la fonction dont désire récupérer l'adresse
+   base->get_player_name = sym(p, "get_player_name");
+   base->play = sym(p, "play");
+   base->finalize = sym(p, "finalize");
+}
+
+size_t min(size_t x,size_t y){
+  if (x<y)
+    return x;
+  return y;
+}
+
+int main(int argc, char *argv[]) {
+
+  //srand(time(NULL));
+
+  /* Initialisation du jeu */
+
+  struct graph *graph = init_graph();
+  struct deck *deck = init_deck();
+  struct players *players = init_players(argc - 1);
+  struct moves* moves = init_moves();
+  struct move first_move = {VALID, -1, draw_card(deck), {0, 0}, NORTH, NO_MEEPLE};
+  add_move(moves, &first_move);
+  add_tile(graph, &first_move);
+
+  void *tab_pointeurs[argc - 1];
+  for (int i = 1; i < argc; i++) {
+    void *bibliotheque = open(argv[i]);
+    tab_pointeurs[i - 1] = bibliotheque;
+  }
+  for (size_t i = 0; i < players->remaining_players; i++) {
+      load_functions(tab_pointeurs[i], &players->players[i].p);
+      players->players[i].p.initialize(i, players->remaining_players + 1);
+      char const *name = players->players[i].p.get_player_name();
+      printf("le joueur %s va jouer \n",name);
+  }
+
+  int id_player = 0;
+  enum card_id card;
+  int number_of_moves;
+  struct move *last_moves;
+  struct move move_player;
+  
+  /* Boucle du jeu*/
+  
+  while (deck_is_empty(deck) == FALSE && players->remaining_players > 1) {
+    card = draw_card(deck);
+    if (is_playable(graph, card) == TRUE) {	 
+      printf("le joueur actuel est %d\n", id_player);	 
+      number_of_moves = min(moves->count_moves, players->remaining_players);
+      last_moves = last_n_moves(moves, number_of_moves);
+      move_player = players->players[id_player].p.play(card, last_moves, number_of_moves);
+      printf("\nnumero du joueur : %d\n", move_player.player);
+      free(last_moves);
+
+      
+      if (valid_move_card(&move_player) == TRUE) {
+	printf("le coup joué par le joueur est valide\n\n");
+	add_tile(graph, &move_player);
+      } else {
+	eject_player(players, &players->players[id_player]);
+	printf("le coup joué par le joueur %d n'est pas valide\n\n", id_player);
+      }
+      id_player++;
+      id_player = compute_next_player(players, &players->players[id_player]);
+      
+      add_move(moves, &move_player);
+    }
+    
+
+    
+
+
+    
+    
+
+    
+  }
+  
+  for (int i = 0; i < NUMBER_OF_CARDS; ++i) {
+    for (int j = 0; j < 13; ++j) {
+      printf("%d ", graph->nodes[i]->table[j]);
+    }
+    printf("\n");
+  }
+  
+  for (int i = 0; i < argc - 1; i++)  
+    players->players[i].p.finalize();
+  
+  free_deck(deck);
+  free_moves(moves);
+  free_graph(graph);
+  
+  return EXIT_SUCCESS;
+}
+

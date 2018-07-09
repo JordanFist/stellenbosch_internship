@@ -1,0 +1,218 @@
+#include "board.h"
+#include "server.h"
+#include <stdlib.h>
+
+struct board *init_board() {
+  struct board *b = (struct board *) malloc(sizeof(struct board));
+  if (b == NULL)
+    exit(1);
+  for (int i = 0; i < BOARD_SIZE; ++i) {
+    for (int j = 0; j < BOARD_SIZE; ++j)
+      b->board[i][j] = NULL;
+  }
+  return b;
+}
+
+void circular_right_rotation(struct box *b, enum direction d) {
+  int x;
+  for (int i = 0; i < d; ++i) {
+    x = b->landscape_side[NUMBER_OF_SIDE - 1];
+    for (int j = NUMBER_OF_SIDE - 1; j > 0; --j)
+      b->landscape_side[j] = b->landscape_side[j - 1];
+    b->landscape_side[0] = x;
+  }
+}
+
+//d_put et d_to_put c'est la direction des cartes qui se touchent
+boolean match_card(struct box *put, struct box *to_put, enum direction d_put, enum direction d_to_put) {
+  if (put == NULL)
+    return TRUE;
+  if (put->landscape_side[d_put] == to_put->landscape_side[d_to_put])
+    return TRUE;
+  return FALSE;
+}
+
+boolean valid_move(struct board *b, struct move *m) {
+  int res = 0;
+  int x = m->onto.x;
+  int y = m->onto.y;
+  if (b->board[x][y] == NULL) {
+    struct box *box = init_box(m->card);
+    circular_right_rotation(box, m->dir);
+    if (match_card(b->board[x - 1][y], box, SOUTH, NORTH) == 1)
+      res += 1;
+    if (match_card(b->board[x][y + 1], box, WEST, EAST) == 1)
+      res += 1;
+    if (match_card(b->board[x + 1][y], box, NORTH, SOUTH) == 1)
+    res += 1;
+    if (match_card(b->board[x][y - 1], box, EAST, WEST) == 1)
+      res += 1;
+    if (res == NUMBER_OF_SIDE)
+      b->board[x][y] = box;
+  }
+  return (res == NUMBER_OF_SIDE);
+}
+
+void free_board(struct board *b) {
+  for (int i = 0; i < BOARD_SIZE; ++i) {
+    for (int j = 0; j < BOARD_SIZE; ++j)
+      free(b->board[i][j]);
+  }
+  free(b);
+}
+
+struct box *init_box(enum card_id name) {
+  struct box *box = (struct box *) malloc(sizeof(struct box));
+  switch(name) {
+  case(CARD_MONASTERY_ROAD):
+    box->landscape_side[0] = PLAIN;
+    box->landscape_side[1] = PLAIN;
+    box->landscape_side[2] = ROAD;
+    box->landscape_side[3] = PLAIN;
+    break;
+  case(CARD_MONASTERY_ALONE):
+    box->landscape_side[0] = PLAIN;
+    box->landscape_side[1] = PLAIN;
+    box->landscape_side[2] = PLAIN;
+    box->landscape_side[3] = PLAIN;
+    break;
+  case(CARD_CITY_ALL_SIDES):
+    box->landscape_side[0] = CITY;
+    box->landscape_side[1] = CITY;
+    box->landscape_side[2] = CITY;
+    box->landscape_side[3] = CITY;
+    break;
+  case(CARD_ROAD_STRAIGHT_CITY):
+    box->landscape_side[0] = ROAD;
+    box->landscape_side[1] = CITY;
+    box->landscape_side[2] = ROAD;
+    box->landscape_side[3] = PLAIN;
+    break;
+  case(CARD_CITY_ONE_SIDE):
+    box->landscape_side[0] = CITY;
+    box->landscape_side[1] = PLAIN;
+    box->landscape_side[2] = PLAIN;
+    box->landscape_side[3] = PLAIN;
+    break;
+  case(CARD_CITY_TUNNEL_SHLD):
+    box->landscape_side[0] = PLAIN;
+    box->landscape_side[1] = CITY;
+    box->landscape_side[2] = PLAIN;
+    box->landscape_side[3] = CITY;
+    break;
+  case(CARD_CITY_TUNNEL):
+    box->landscape_side[0] = CITY;
+    box->landscape_side[1] = PLAIN;
+    box->landscape_side[2] = CITY;
+    box->landscape_side[3] = PLAIN;
+    break;
+  case(CARD_PLAIN_TUNNEL):
+    box->landscape_side[0] = PLAIN;
+    box->landscape_side[1] = CITY;
+    box->landscape_side[2] = PLAIN;
+    box->landscape_side[3] = CITY;
+    break;
+  case(CARD_PLAIN_TWO_CITIES):
+    box->landscape_side[0] = PLAIN;
+    box->landscape_side[1] = CITY;
+    box->landscape_side[2] = CITY;
+    box->landscape_side[3] = PLAIN;
+    break;
+  case(CARD_ROAD_TURN_RIGHT_CITY):
+    box->landscape_side[0] = CITY;
+    box->landscape_side[1] = ROAD;
+    box->landscape_side[2] = ROAD;
+    box->landscape_side[3] = CITY;
+    break;
+  case(CARD_ROAD_TURN_LEFT_CITY):
+    box->landscape_side[0] = ROAD;
+    box->landscape_side[1] = CITY;
+    box->landscape_side[2] = PLAIN;
+    box->landscape_side[3] = ROAD;
+    break;
+  case(CARD_JUNCTION_CITY):
+    box->landscape_side[0] = ROAD;
+    box->landscape_side[1] = CITY;
+    box->landscape_side[2] = ROAD;
+    box->landscape_side[3] = ROAD;
+    break;
+  case(CARD_PLAIN_CITY_SHLD):
+    box->landscape_side[0] = CITY;
+    box->landscape_side[1] = ROAD;
+    box->landscape_side[2] = ROAD;
+    box->landscape_side[3] = CITY;
+    break;
+  case(CARD_PLAIN_CITY):
+    box->landscape_side[0] = CITY;
+    box->landscape_side[1] = PLAIN;
+    box->landscape_side[2] = PLAIN;
+    box->landscape_side[3] = CITY;
+    break;
+  case(CARD_PLAIN_CITY_ROAD_SHLD):
+    box->landscape_side[0] = CITY;
+    box->landscape_side[1] = ROAD;
+    box->landscape_side[2] = ROAD;
+    box->landscape_side[3] = CITY;
+    break;
+ case(CARD_PLAIN_CITY_ROAD):
+    box->landscape_side[0] = CITY;
+    box->landscape_side[1] = ROAD;
+    box->landscape_side[2] = ROAD;
+    box->landscape_side[3] = CITY;
+    break;
+ case(CARD_CITY_THREE_SHLD):
+    box->landscape_side[0] = CITY ;
+    box->landscape_side[1] = CITY ;
+    box->landscape_side[2] = PLAIN;
+    box->landscape_side[3] = CITY ;
+    break;
+ case(CARD_CITY_THREE):
+    box->landscape_side[0] = CITY;
+    box->landscape_side[1] = CITY;
+    box->landscape_side[2] = PLAIN;
+    box->landscape_side[3] = CITY;
+    break;
+  case(CARD_CITY_THREE_ROAD_SHLD):
+    box->landscape_side[0] = CITY;
+    box->landscape_side[1] = CITY;
+    box->landscape_side[2] = ROAD;
+    box->landscape_side[3] = CITY;
+    break;
+  case(CARD_CITY_THREE_ROAD):
+    box->landscape_side[0] = CITY;
+    box->landscape_side[1] = CITY;
+    box->landscape_side[2] = ROAD;
+    box->landscape_side[3] = CITY;
+    break;
+  case(CARD_ROAD_STRAIGHT):
+    box->landscape_side[0] = ROAD;
+    box->landscape_side[1] = PLAIN;
+    box->landscape_side[2] = ROAD;
+    box->landscape_side[3] = PLAIN;
+    break;
+  case(CARD_ROAD_TURN):
+    box->landscape_side[0] = PLAIN;
+    box->landscape_side[1] = PLAIN;
+    box->landscape_side[2] = ROAD;
+    box->landscape_side[3] = ROAD;
+    break;
+  case(CARD_JUNCTION_THREE):
+    box->landscape_side[0] = PLAIN;
+    box->landscape_side[1] = ROAD;
+    box->landscape_side[2] = ROAD;
+    box->landscape_side[3] = ROAD;
+    break;
+  case(CARD_JUNCTION_FOUR):
+    box->landscape_side[0] = ROAD;
+    box->landscape_side[1] = ROAD;
+    box->landscape_side[2] = ROAD;
+    box->landscape_side[3] = ROAD;
+    break;
+ default: 
+   exit(1);
+   break;
+  }
+   return box;
+}
+
+

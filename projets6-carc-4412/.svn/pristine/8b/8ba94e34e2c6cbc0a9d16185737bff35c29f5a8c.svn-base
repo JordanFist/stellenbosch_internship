@@ -1,0 +1,32 @@
+#ifndef BOARD_H
+#define BOARD_H
+#include "server.h"
+
+#define NUMBER_OF_SIDE 4
+#define BOARD_SIZE 144     
+#define NUMBER_OF_POSITIONS 13
+
+enum landscape {
+  ROAD,
+  PLAIN,
+  CITY,
+  CROSSROAD,
+  ABBEY,
+};
+
+struct box { 
+  enum landscape landscape_side[NUMBER_OF_SIDE];
+  enum boolean occupy[NUMBER_OF_POSITIONS];
+};
+
+struct board {
+  struct box *board[BOARD_SIZE][BOARD_SIZE];
+};
+
+
+struct board *init_board();
+void circular_right_rotation(struct box *b, enum direction d);
+void free_board(struct board *b);
+struct box *init_box(enum card_id name);
+
+#endif

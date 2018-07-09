@@ -1,0 +1,74 @@
+#ifndef GRAPH_H
+#define GRAPH_H
+
+#include <server.h>
+
+#define NUMBER_OF_DIRECTIONS 13
+#define SIDES 4
+#define CONNEXIONS_PER_SIDE 3
+#define NEIGHBOUR_CARDS 4
+
+enum landscape {
+  ROAD,
+  PLAIN,
+  CITY,
+  CROSSROAD,
+  ABBEY,
+};
+
+struct node {
+  enum landscape land_type;
+  boolean meeple;
+  int meeple_owner;
+  //struct node *tab[13];
+};
+
+//creer une fonction qui relie les nodes au fur et à mesure qu'on pose les cartes (donc il faut l'initialiser pour la 1er carte)
+//dans set_graph stocker au moins une node de chaque nouveau graph
+
+struct tile {
+  struct node table[NUMBER_OF_DIRECTIONS];
+  enum direction orientation;
+  struct position pos;
+};
+
+struct tile* init_tile(enum card_id ,enum direction,struct position);
+void free_tile(struct tile*);
+void rotation(struct tile* t, enum direction dir);
+boolean match_side(struct tile *t1, struct tile *t2, enum direction d);
+enum landscape get_face(struct tile *t, enum direction d);
+enum direction opposite_face(enum direction d);
+boolean is_empty_tile(struct tile *t);
+//struct tile *compute_neighbour(struct tile *t, enum direction d);
+
+/*****************************************************************/
+static const enum landscape cards_content[LAST_CARD][NUMBER_OF_DIRECTIONS] = {
+  {PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,ROAD,PLAIN,PLAIN,PLAIN,PLAIN,ABBEY},
+  {PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,ABBEY},
+  {CITY,CITY,CITY,CITY,CITY,CITY,CITY,CITY,CITY,CITY,CITY,CITY,CITY},
+  {PLAIN,ROAD,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,ROAD,PLAIN,CITY,CITY,CITY,ROAD},
+  {CITY,CITY,CITY,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN},
+  {PLAIN,PLAIN,PLAIN,CITY,CITY,CITY,PLAIN,PLAIN,PLAIN,CITY,CITY,CITY,CITY},
+  {CITY,CITY,CITY,PLAIN,PLAIN,PLAIN,CITY,CITY,CITY,PLAIN,PLAIN,PLAIN,CITY},
+  {PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,CITY,CITY,CITY,PLAIN,PLAIN,PLAIN,PLAIN},
+  {PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,CITY,CITY,CITY,CITY,CITY,CITY},
+  {CITY,CITY,CITY,PLAIN,PLAIN,PLAIN,PLAIN,ROAD,PLAIN,PLAIN,ROAD,PLAIN,ROAD},
+  {PLAIN,ROAD,PLAIN,PLAIN,ROAD,PLAIN,PLAIN,PLAIN,PLAIN,CITY,CITY,CITY,ROAD},
+  {PLAIN,ROAD,PLAIN,PLAIN,ROAD,PLAIN,PLAIN,ROAD,PLAIN,CITY,CITY,CITY,CROSSROAD},
+  {CITY,CITY,CITY,CITY,CITY,CITY,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN},
+  {CITY,CITY,CITY,CITY,CITY,CITY,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN},
+  {CITY,CITY,CITY,CITY,CITY,CITY,PLAIN,ROAD,PLAIN,PLAIN,ROAD,PLAIN,PLAIN},
+  {CITY,CITY,CITY,CITY,CITY,CITY,PLAIN,ROAD,PLAIN,PLAIN,ROAD,PLAIN,PLAIN},
+  {CITY,CITY,CITY,CITY,CITY,CITY,PLAIN,PLAIN,PLAIN,CITY,CITY,CITY,CITY},
+  {CITY,CITY,CITY,CITY,CITY,CITY,PLAIN,PLAIN,PLAIN,CITY,CITY,CITY,CITY},
+  {CITY,CITY,CITY,CITY,CITY,CITY,PLAIN,ROAD,PLAIN,CITY,CITY,CITY,CITY},
+  {CITY,CITY,CITY,CITY,CITY,CITY,PLAIN,ROAD,PLAIN,CITY,CITY,CITY,CITY},
+  {PLAIN,ROAD,PLAIN,PLAIN,PLAIN,PLAIN,PLAIN,ROAD,PLAIN,PLAIN,PLAIN,PLAIN,ROAD},
+  {PLAIN,PLAIN,PLAIN,PLAIN,ROAD,PLAIN,PLAIN,ROAD,PLAIN,PLAIN,PLAIN,PLAIN,ROAD},
+  {PLAIN,PLAIN,PLAIN,PLAIN,ROAD,PLAIN,PLAIN,ROAD,PLAIN,PLAIN,ROAD,PLAIN,CROSSROAD},
+  {PLAIN,ROAD,PLAIN,PLAIN,ROAD,PLAIN,PLAIN,ROAD,PLAIN,PLAIN,ROAD,PLAIN,CROSSROAD},
+ };
+
+/***********************************************************/
+
+#endif

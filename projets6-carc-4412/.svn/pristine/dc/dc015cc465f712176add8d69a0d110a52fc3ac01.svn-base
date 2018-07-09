@@ -1,0 +1,23 @@
+#ifndef SET_GRAPH_H
+#define SET_GRAPH_H
+
+#include <server.h>
+#include <graph.h>
+
+struct graph {
+  struct tile *nodes[NUMBER_OF_CARDS];
+  int count_nodes;
+};
+
+struct graph* init_graph();
+void free_graph(struct graph*);
+boolean match_card(struct graph *g, struct tile *t);
+int is_playable(struct graph*, enum card_id card); 
+int add_tile(struct graph*, struct move const *m);
+boolean valid_move_card(struct graph *g, struct move *m);
+struct tile *find_tile(struct graph *g, struct position *p);
+struct position neighbour_position(struct position *p, enum direction d);
+struct tile *compute_neighbour(struct graph *g, struct tile *t, enum direction d);
+boolean is_connectable(struct graph *g, struct tile *t);
+#endif
+

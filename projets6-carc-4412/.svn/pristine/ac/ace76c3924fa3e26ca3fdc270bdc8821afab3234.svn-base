@@ -1,0 +1,34 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<board.h>
+
+int is_playable(struct board *board, struct box* box){
+  for(int i=0; i++; i<144){
+    for(int j=0; j++; j<144){
+      if(board->board[i][j] != NULL){
+	if(board->board[i-1][j]==NULL){
+	  for(int l=0; l<4; l++)
+	    if(match_card(board->board[i-1][j], box, 0, 0+l)==1)
+	      return 1;
+	}
+	if(board->board[i][j-1]==NULL){
+	  for(int l=0; l<4; l++)
+	    if(match_card(board->board[i][j-1], box, 0, 0+l)==1)
+	      return 1;
+	}
+	if(board->board[i+1][j]==NULL){
+	  for(int l=0; l<4; l++)
+	    if(match_card(board->board[i+1][j], box, 0, 0+l)==1)
+	      return 1;
+	}
+	if(board->board[i+1][j+1]==NULL){
+	  for(int l=0; l<4; l++)
+	    if(match_card(board->board[i+1][j+1], box, 0, 0+l)==1)
+	      return 1;
+	}
+      }
+    }
+  }
+  return 0;
+}
+

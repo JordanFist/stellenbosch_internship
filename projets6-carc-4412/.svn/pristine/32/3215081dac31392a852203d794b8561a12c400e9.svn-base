@@ -1,0 +1,45 @@
+#include <moves.h>
+#include <server.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+//Return an empty struct moves
+struct moves *init_moves() {
+  struct moves *m = (struct moves *) malloc(sizeof(struct moves));
+  if (m == NULL)
+    exit(1);
+  m->count_moves = 0;
+  return m;
+}
+
+//Ajouter le premier move (1er carte)?
+void reverse_last_moves(struct moves *m, struct move *last_moves, int number_of_moves) {
+  while (number_of_moves != 0) {
+    last_moves[number_of_moves - 1] = m->move_player[m->count_moves - number_of_moves];
+    --number_of_moves;
+  }
+}
+
+struct move *last_n_moves(struct moves *m, int number_of_moves) {
+  //struct move *last_moves = (struct move *) malloc(number_of_moves * sizeof(struct move));
+  return &m->move_player[m->count_moves - number_of_moves];
+  //for (int i = 0; i < number_of_moves; ++i) 
+  //last_moves[i] = m->move_player[m->count_moves - number_of_moves + i];
+  //reverse_last_moves(m, last_moves, number_of_moves);
+  //return last_moves;
+}
+
+//Add a move in the move_player array
+int add_move(struct moves *m, struct move *m_add) {
+  if (m_add != NULL) {
+    m->move_player[m->count_moves] = *m_add;
+    ++m->count_moves;
+  }
+  return (&m->move_player[m->count_moves] == m_add);
+}
+
+//Free the struct moves
+void free_moves(struct moves *m) {
+  free(m);
+}
+

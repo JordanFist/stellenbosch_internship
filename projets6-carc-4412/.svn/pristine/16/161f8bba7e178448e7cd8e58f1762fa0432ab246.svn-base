@@ -1,0 +1,15 @@
+#include <node.h>
+
+enum landscape landscape_node(struct node *n) {
+  return n->land_type;
+}
+
+int size_next_nodes(struct node *n) {
+  return n->number_of_nodes;
+}
+
+void init_nodes(struct node *n) {
+  n->land_type = cards_content[id][i];
+  n->meeple = FALSE;
+  n->meeple_owner = NO_PLAYER;
+}

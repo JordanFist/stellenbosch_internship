@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <graph.h>
+
+#define NO_PLAYER 0
+
+/*
+void print(struct tile* tile){
+  for (int i=0 ;i<NUMBER_OF_DIRECTIONS; i++)
+    printf("%d\t",tile->table[i].land_type);
+  printf("\n");
+}
+*/
+
+struct tile* init_tile(enum card_id id ,enum direction dir, struct position position) {
+  struct tile *tile = (struct tile *) malloc(sizeof(struct tile));
+  if (tile == NULL)
+    exit(1);
+  tile->orientation = dir;
+  for (int i = 0; i < NUMBER_OF_DIRECTIONS; i++) {
+      tile->table[i].land_type = cards_content[id][i];
+      tile->table[i].meeple = FALSE;
+      tile->table[i].meeple_owner = NO_PLAYER;
+      tile->pos = position;
+  }
+  rotation(tile, dir);
+  return tile;  
+}
+
+void free_tile(struct tile* tile){
+  free(tile);
+}
+
+boolean is_empty_tile(struct tile *t) {
+  if (t == NULL)
+    return TRUE;
+  return FALSE;
+}
+
+void rotation(struct tile* t, enum direction dir) {
+  struct node swap;
+  for (unsigned int j = 0; j < 3 * dir; ++j) {
+    swap = t->table[NUMBER_OF_DIRECTIONS - 2];
+    for (int i = NUMBER_OF_DIRECTIONS - 2; i > 0; --i)
+      t->table[i] = t->table[i - 1];
+    t->table[0] = swap;
+  }
+}
+
+enum landscape get_face(struct tile *t, enum direction d) {
+  return t->table[3 * d + 1].land_type;
+}
+
+enum direction opposite_face(enum direction d) {
+  return ((d + 2) % SIDES);
+}
+
+//d direction de la carte 2 par rapport a la carte 1
+boolean match_side(struct tile *t1, struct tile *t2, enum direction d) {
+  if (t2 == NULL)
+    return TRUE;
+  enum landscape face1 = get_face(t1, d);
+  enum landscape face2 = get_face(t2, opposite_face(d));
+  return (face1 == face2);
+}
+
+

@@ -1,0 +1,55 @@
+#include <server.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <set_graph.h>
+#include <graph.h>
+
+static struct graph *graph;
+
+unsigned int identity;
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+char const *get_player_name() {
+  char const *name = "Julien";
+  return name;
+}
+
+struct move search_valid_position(struct graph *g, struct move *m) {
+  struct tile *tile = init_tile(m->card, NORTH, m->onto);
+  for (int i = 0 ; i < g->number_of_tiles; i++) {
+    for (int j = 0; j < NEIGHBOUR_CARDS; j++) {
+      tile->pos = neighbour_position(&g->tiles[i]->pos, j);
+      if((is_empty_tile(compute_neighbour(g, g->tiles[i], j)) == TRUE) && (is_connectable(g, tile) == TRUE)) {
+	m->onto = tile->pos;
+	m->dir = tile->orientation;
+	free_tile(tile);
+	return *m;
+      }
+    }
+  }
+  free_tile(tile);
+  return *m;
+}
+
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+void initialize(unsigned int id, unsigned int n_players) {
+  identity = id;
+  graph = init_graph();
+  printf("Initialisation du client \n");
+}
+
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+struct move play(enum card_id card, struct move const previous_moves[], size_t n_moves) {
+  for (unsigned int i = 0; i < n_moves; ++i)
+    add_tile(graph, &previous_moves[i]);
+  struct move m = {FAILED, identity, card, {0, 0}, NORTH, rand() % NUMBER_OF_DIRECTIONS};
+  m = search_valid_position(graph, &m);
+  return m; 
+}
+
+#pragma GCC diagnostic pop
+void finalize(){
+  printf("finalisation du jeu du client \n");
+  free_graph(graph);
+}

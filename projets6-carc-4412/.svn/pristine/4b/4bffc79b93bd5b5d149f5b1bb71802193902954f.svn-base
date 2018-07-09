@@ -1,0 +1,44 @@
+#include "server.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+unsigned int identity;
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+char const *get_player_name()
+{
+  char const* name ="Julien";
+  return name;
+  
+}
+
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+void initialize(unsigned int id,unsigned int n_players){
+  identity=id;
+  printf("Initialisation du client 1 \n");
+}
+
+
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+struct move play(enum card_id card,struct move const previous_moves[], size_t n_moves){
+  struct move move;
+  struct position pos;
+  pos.x=4;
+  pos.y=2;
+  enum action check1=rand()%2;
+  move.card= card;
+  move.dir=rand()%4;
+  move.place=5;
+  move.onto=pos;
+  move.check=check1;
+  for (size_t i = 0; i < n_moves; i++) {
+    //printf("les coups précédents proviennent de ces joueurs : %d \n",previous_moves[i].player);
+    printf("la structure move de ce joueur est { %d,%d,%d,{%d,%d},%d,%d}\n",previous_moves[i].check,previous_moves[i].dir,previous_moves[i].place,previous_moves[i].onto.x,previous_moves[i].onto.y,previous_moves[i].player,previous_moves[i].card);
+  }
+  return move; 
+}
+
+#pragma GCC diagnostic pop
+void finalize(){
+  printf("finalisation du jeu du client \n");
+}

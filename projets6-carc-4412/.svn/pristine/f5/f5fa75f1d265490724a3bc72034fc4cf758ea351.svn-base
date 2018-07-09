@@ -1,0 +1,26 @@
+#ifndef GRAPH_H
+#define GRAPH_H
+
+#include <server.h>
+#include <nodes.h>
+
+#define SIDES 4
+#define NEIGHBOUR_CARDS 4
+
+struct tile {
+  struct node nodes[NUMBER_OF_DIRECTIONS];
+  enum direction orientation;
+  struct position pos;
+  //struct tile *neighbour_tiles[NEIGHBOUR_CARDS];
+};
+
+struct tile* init_tile(enum card_id ,enum direction,struct position);
+void free_tile(struct tile*);
+void rotation(struct tile* t, enum direction dir);
+boolean match_side(struct tile *t1, struct tile *t2, enum direction d);
+enum landscape get_face(struct tile *t, enum direction d);
+enum direction opposite_face(enum direction d);
+boolean is_empty_tile(struct tile *t);
+void init_next_nodes(struct tile *t);
+
+#endif

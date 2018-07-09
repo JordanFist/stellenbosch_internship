@@ -1,0 +1,51 @@
+\select@language {french}
+\contentsline {section}{\numberline {1}Pr\IeC {\'e}ambule}{2}{section.1}
+\contentsline {paragraph}{}{2}{section*.2}
+\contentsline {subsection}{\numberline {1.1}Vocabulaire}{2}{subsection.1.1}
+\contentsline {paragraph}{}{2}{section*.3}
+\contentsline {section}{\numberline {2}Introduction}{2}{section.2}
+\contentsline {subsection}{\numberline {2.1}Mise en situation}{2}{subsection.2.1}
+\contentsline {paragraph}{}{2}{section*.4}
+\contentsline {subsection}{\numberline {2.2}Les r\IeC {\`e}gles du jeu}{3}{subsection.2.2}
+\contentsline {paragraph}{}{3}{section*.5}
+\contentsline {paragraph}{}{6}{section*.6}
+\contentsline {subsection}{\numberline {2.3}Objectif du projet}{6}{subsection.2.3}
+\contentsline {paragraph}{}{6}{section*.7}
+\contentsline {section}{\numberline {3}Impl\IeC {\'e}mention}{6}{section.3}
+\contentsline {subsection}{\numberline {3.1}Int\IeC {\'e}raction client/serveur}{6}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}La boucle globale du jeu}{7}{subsection.3.2}
+\contentsline {paragraph}{}{7}{section*.8}
+\contentsline {paragraph}{}{7}{section*.9}
+\contentsline {section}{\numberline {4}D\IeC {\'e}finitions des types abstraits de donn\IeC {\'e}es n\IeC {\'e}cessaires pour la mod\IeC {\'e}lisation du jeu}{7}{section.4}
+\contentsline {subsection}{\numberline {4.1}Les fonctions du TAD deck}{7}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}D\IeC {\'e}duction d'une structure deck}{8}{subsection.4.2}
+\contentsline {paragraph}{}{8}{section*.10}
+\contentsline {subsection}{\numberline {4.3}Les fonctions du TAD moves}{8}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.4}D\IeC {\'e}duction d'une structure moves}{8}{subsection.4.4}
+\contentsline {paragraph}{}{8}{section*.11}
+\contentsline {subsection}{\numberline {4.5}Les fonctions du TAD players}{9}{subsection.4.5}
+\contentsline {paragraph}{}{9}{section*.12}
+\contentsline {subsection}{\numberline {4.6}D\IeC {\'e}duction d'une structure players}{9}{subsection.4.6}
+\contentsline {paragraph}{}{9}{section*.13}
+\contentsline {paragraph}{}{10}{section*.14}
+\contentsline {paragraph}{}{10}{section*.15}
+\contentsline {section}{\numberline {5}D\IeC {\'e}finition des types abstraits de donn\IeC {\'e}es permettant de valider les coups jou\IeC {\'e}s}{10}{section.5}
+\contentsline {subsection}{\numberline {5.1}Les fonctions du TAD tile}{10}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}D\IeC {\'e}duction d'une structure tile}{10}{subsection.5.2}
+\contentsline {paragraph}{}{10}{section*.16}
+\contentsline {subsection}{\numberline {5.3}Les fonctions du TAD set\_graph}{11}{subsection.5.3}
+\contentsline {subsection}{\numberline {5.4}D\IeC {\'e}duction d'une structure set\_graph}{11}{subsection.5.4}
+\contentsline {paragraph}{}{11}{section*.17}
+\contentsline {subsection}{\numberline {5.5}Les fonctions du TAD node}{11}{subsection.5.5}
+\contentsline {subsection}{\numberline {5.6}D\IeC {\'e}duction d'une structure node}{12}{subsection.5.6}
+\contentsline {section}{\numberline {6}Liaisons entre les TAD}{12}{section.6}
+\contentsline {section}{\numberline {7}Modifier les structures : les fonctions importantes}{12}{section.7}
+\contentsline {section}{\numberline {8}Impl\IeC {\'e}menter une strat\IeC {\'e}gie de jeu pour les joueurs}{14}{section.8}
+\contentsline {subsection}{\numberline {8.1}Les strat\IeC {\'e}gies impl\IeC {\'e}ment\IeC {\'e}es par nos joueurs}{14}{subsection.8.1}
+\contentsline {subsection}{\numberline {8.2}Les strat\IeC {\'e}gies impl\IeC {\'e}mentables pour une version am\IeC {\'e}lior\IeC {\'e}e}{14}{subsection.8.2}
+\contentsline {section}{\numberline {9}Compter les points des joueurs}{15}{section.9}
+\contentsline {paragraph}{}{15}{section*.18}
+\contentsline {section}{\numberline {10}Conclusion}{15}{section.10}
+\contentsline {subsection}{\numberline {10.1}R\IeC {\'e}sultats exp\IeC {\'e}rimentaux}{15}{subsection.10.1}
+\contentsline {paragraph}{}{15}{section*.19}
+\contentsline {subsection}{\numberline {10.2}Le code fourni atteint-il l'objectif fix\IeC {\'e} ?}{15}{subsection.10.2}
