@@ -1,0 +1,48 @@
+To compile : javac name.java
+To run : java name
+
+Make a main: public static void main(String[] args)
+
+Tab commands :
+==============
+
+to import: import java.util.ArrayList;
+to create a tab: ArrayList<Integer> tab = new ArrayList<Integer>();
+to make a for: for (int n : tab)
+to declare in argumemt: ArrayList<Integer> tab
+to add: tab.add(n);
+to access: tab.get(i);
+to insert: tab.add(i, n);
+to get size: tab.size();
+
+to create: int tab[] = new int[3];
+to access: tab[i];
+to get size: tab.length
+
+HashMap commands :
+==================
+
+to import: import java.util.HashMap;
+to create a hashmap: HashMap<String, Integer> map = new HashMap<String, Integer>();
+to associate/add: map.put("test", 21);
+to access: map.get("test"); // return 21
+to get size: map.size();
+to make a for: for (name : map.keySet()) name takes the value test (Actually all names in map)
+to declare in argument: HashMap<String, Integer> map
+
+Scan commands :
+===============
+
+to import: import java.util.*;
+to create: Scanner scan = new Scanner(System.in);
+to scan an int: int a = scan.nextInt(); 
+
+Convert commands :
+==================
+
+int x = Integer.parseInt("123"); // x = 123
+
+for loop:
+=========
+
+in array: for (int x : tab) // tab is an array
