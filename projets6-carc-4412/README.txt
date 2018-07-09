@@ -1,12 +1,7 @@
 PROJET : Carcassonne
 
 Cette version permet de placer correctement les cartes du jeu Carcassone sur un plateau.
-Une version plus poussé et presque fonctionnelle contenant la pose des pions se trouve dans carcassonne_meeple
-
-Eleves : - Lilia CHeikh
-         - Zakaria Chlih
-	 - Anas Naddami
-	 - Sandri Jordan
+Une version plus poussée et presque fonctionnelle contenant la pose des pions se trouve dans carcassonne_meeple
 
 Ce dossier contient un Makefile :
    make : Compile et exécute le serveur

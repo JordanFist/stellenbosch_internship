@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <graph.h>
+#include <tile.h>
 #include <assert.h>
-#include <nodes.h>
+#include <node.h>
 
 /*POUR L'AFFICHAGE*/
 char FAIL[]="\033[31;1mFAIL\033[0m";
