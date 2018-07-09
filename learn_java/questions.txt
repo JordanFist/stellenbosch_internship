@@ -1,5 +1,0 @@
-1. on peut faire la taille qu'on veut pour les arrays pas besoin de donner la taille lors de la creation ?
-2.pq preciser 2 fois int dans la creation d'un array ?
-3.print ou println difference
-4. public class ou class ? difference ?
-5. same with public int name() or int name()
