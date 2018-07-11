@@ -13,3 +13,5 @@
 	for example in src/java repository : deck.java tile.java player.java ...
 
 3. How to implement the game ? with a server ? how to do in java ?
+
+4. For the school clients was implemented and computer plays alone what about this java version ? 
