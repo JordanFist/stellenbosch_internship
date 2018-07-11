@@ -1,0 +1,2 @@
+1. how to divide functions in differents files ? like in C (.h and .c)
+2. can I have a file with only functions in (no main) and a main file ? like in C (.o)
