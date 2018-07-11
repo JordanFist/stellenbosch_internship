@@ -1,0 +1,15 @@
+1. how to organize the main directory ?
+	carcassonne :   - src : - java
+				- classes
+
+			- tests : -java
+				  -classes
+
+			- server : ?
+
+			- doc
+						
+2. Is the method the same as C ?
+	for example in src/java repository : deck.java tile.java player.java ...
+
+3. How to implement the game ? with a server ? how to do in java ?
