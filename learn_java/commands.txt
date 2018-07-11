@@ -46,3 +46,10 @@ for loop:
 =========
 
 in array: for (int x : tab) // tab is an array
+
+Multiple files :
+================
+
+To store the output to different directory : javac -d path name.java
+To include files coming from another directory in the compilation : javac -cp path name.java
+To run a file if you need a class from another directory : java -cp path: name 
