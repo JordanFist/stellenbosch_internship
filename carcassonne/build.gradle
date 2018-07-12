@@ -1,0 +1,14 @@
+apply plugin: 'java'
+
+// uncomment and add sources if external libraries are needed
+// buildscript {
+//   repositories {
+//     mavenCentral()
+//   }
+// }
+
+// repositories {
+//   mavenCentral()
+//   mavenLocal()
+// }
+
