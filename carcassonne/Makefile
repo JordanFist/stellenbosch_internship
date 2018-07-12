@@ -13,4 +13,4 @@ run:
 
 .PHONY: clean
 clean:
-	gradle clean
+	@gradle clean
