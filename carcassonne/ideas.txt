@@ -3,8 +3,8 @@
 								     - core : - repository with .java
 				
 
-			- tests : -java
-				  -classes
+			- tests : - main : - java : - <project name> : - Main.java
+								     - core : - repository with .java
 
 			- server : ?
 
