@@ -6,10 +6,34 @@ public class Data {
 	public static int numberOfCards = 71;
 	public static int startingNumberOfMeeples = 8;
 	public static int effective[] = {2, 4, 1, 3, 5, 2, 1, 3, 2, 3, 3, 3, 2, 3, 2, 3, 1, 3, 2, 1, 8, 9, 4, 1};
+	
+	public static HashMap<String, Integer> direction = new HashMap<String, Integer>();
+	public static HashMap<String, Integer> place = new HashMap<String, Integer>();
 	public static HashMap<String, Integer> cardId = new HashMap<String, Integer>();
 
 	public Data() {
-		cardId.put("CARD_MONASTERY_ROAD", 0); // 0. monastery center, connected to one road S (2)
+		direction.put("NORTH", 0);
+		direction.put("WEST", 1);
+		direction.put("SOUTH", 2);
+		direction.put("EAST", 3);
+
+		place.put("POS_NORTH_EAST", 0);  // {NE}
+		place.put("POS_NORTH", 1);       // {N}
+		place.put("POS_NORTH_WEST", 2);	 // {NW}
+		place.put("POS_WEST_NORTH", 3);  // {WN}
+		place.put("POS_WEST", 4);	 // {W}
+		place.put("POS_WEST_SOUTH", 5);  // {WS}
+		place.put("POS_SOUTH_WEST", 6);  // {SW}
+		place.put("POS_SOUTH", 7);	 // {S}
+		place.put("POS_SOUTH_EAST", 8);  // {SE}
+		place.put("POS_EAST_SOUTH", 9);  // {ES}
+		place.put("POS_EAST", 10);	 // {E}
+		place.put("POS_EAST_NORTH", 11); // {EN}
+		place.put("POS_CENTER", 12);     // {C}
+		place.put("NO_MEEPLE", 13);      // special place for not placing a meeple
+
+
+
 		cardId.put("CARD_MONASTERY_ROAD", 0); // 0. monastery center, connected to one road S (2)
 
 		cardId.put("CARD_MONASTERY_ALONE", 1); // 1. monastery center (4)

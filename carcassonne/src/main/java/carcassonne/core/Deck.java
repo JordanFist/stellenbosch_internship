@@ -44,15 +44,4 @@ public class Deck {
 			}
 		}
 	}
-<<<<<<< HEAD
-	/*
-	public static void main(String[] args) {
-		Data data = new Data();
-		Deck d = new Deck();
-		for (int i : d.pile)
-			System.out.println(i);
-	}	
-	*/
-=======
->>>>>>> 63d5d068c869fdc758ee7d6f18c0bc17088e77cd
 }
