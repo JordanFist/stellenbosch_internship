@@ -39,18 +39,30 @@ public class setTile {
 		return findTile(s, pos);
 	}
 
+	public void tileConnection(setTile s, Tile t) {
+		Direction dir = new Direction(0, directionName.NORTH);
+		for (int i = 0; i < Direction.Sides; ++i) {
+			t.neighbourTiles[i] = computeNeighbour(s, t, dir); 	
+			++dir.id;
+		}
+	}
+
 	public Tile neighbourTile(Tile t, Direction dir) {
 		return t.neighbourTiles[dir.id];
 	}
 
-	public void addSetTile (setTile s, Tile t) {
+	public void addSetTile(setTile s, Tile t) {
 		tiles.add(t);
 		//connection between neighbour cards
 		//connection between nodes
 	}
+
+	public void removeSetTile(setTile s, Tile t) {
+		
+	}
 	
 	public boolean matchCard(setTile s, Tile t) {
-		addSetTile(s, t);
+		//addSetTile(s, t);
 		Direction dir = new Direction(0, directionName.NORTH);
 		int count = 0;
 		for (int i = 0; i < Direction.Sides; ++i) {
@@ -64,9 +76,32 @@ public class setTile {
 		return false;
 	}
 
-	//public boolean isConnectable() {setTile s, Tile t}
+	public boolean isConnectable(setTile s, Tile t) {
+		Direction dir = new Direction(1, directionName.WEST);
+		for (int i = 0; i < Direction.Sides; ++i) {
+			if (matchCard(s, t) == true) 
+				return true;	
+		t.rotation(t, dir);
+		}
+		return false;
+	}
 
-	//public boolean isPlayable() {setTile s, Card c}
+	public boolean isPlayable(setTile s, Card card) {
+		Position pos = new Position(0, 0);
+		Direction dir = new Direction(0, directionName.NORTH);
+		Direction dir2 = new Direction(0, directionName.NORTH);
+		Tile t = new Tile(card, dir, pos);
+		for (int i = 0; i < s.tiles.size(); ++i) {
+			for (int j = 0; j < Direction.Sides; ++j) {
+			t.pos = neighbourPosition(s.tiles.get(i).pos, dir2);
+			++dir2.id; 
+			dir2.id %= Direction.Sides;
+				if (t.isEmptyTile(neighbourTile(s.tiles.get(i), dir2)) == true && isConnectable(s, t) == true)
+					return true;
+			}
+		}
+		return false;
+	}
 
 	//validCardMove(setTile s, ) {}
 

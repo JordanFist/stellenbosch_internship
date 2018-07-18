@@ -19,6 +19,10 @@ public class Tile {
 		//init neighbourTiles
 		rotation(this, dir);
 	}
+
+	public boolean isEmptyTile(Tile t) {
+		return (t == null);
+	}
 	
 	public void rotation(Tile t, Direction dir) {
 		Node swap;
