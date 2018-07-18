@@ -1,18 +1,4 @@
-package carcassonne.core;
-
-class Player {
-	protected int id;
-	protected boolean isAlive;
-	protected int numberOfMeeples;
-	protected int points;
-
-	public Player(int idPlayer) {
-		this.id = idPlayer;
-		this.isAlive = true;
-		this.numberOfMeeples = Data.startingNumberOfMeeples;
-		this.points = 0;	
-	}	
-}
+//package carcassonne.core;
 
 public class Players {
 	protected int numberOfPlayers;
@@ -52,4 +38,12 @@ public class Players {
 	public void ejectPlayer(Player p) {
 		p.isAlive = false;
 	}
+	/*
+	public static void main(String[] args) {
+		Players players = new Players(3);
+		System.out.println(players.remainingPlayers(players));
+		players.ejectPlayer(players.players[1]);
+		System.out.println(players.remainingPlayers(players));
+		System.out.println(players.computeNextPlayer(players, players.players[0]));
+	}*/
 }
