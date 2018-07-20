@@ -1,16 +1,14 @@
-//package carcassonne.core;
+package carcassonne.core;
 
 public class Node {
-	public static final int connexionsPerSide = 3;
+	public static final int CONNEXIONS_PER_SIDE = 3;
 
-	protected String landType;
-	protected Player meepleOwner;
-	//protected Node neighbourNodes[] = new Node[connexionsPerSide];
+	public String landType;
+	public Player meepleOwner;
+	//public Node neighbourNodes[] = new Node[CONNEXIONS_PER_SIDE];   Array?
 
 	public Node(Card card, int i) {
 		this.meepleOwner = null;
-		this.landType = Landscape.cardsContent[card.id][i];
+		this.landType = Landscape.CARDS_CONTENT[card.id.toInt()][i];
 	}
-
-	
 }

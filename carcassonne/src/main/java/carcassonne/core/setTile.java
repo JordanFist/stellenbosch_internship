@@ -1,12 +1,12 @@
-//package carcassonne.core;
+package carcassonne.core;
 import java.util.ArrayList;
 
 public class setTile {
-	protected static ArrayList<Tile> tiles = new ArrayList<Tile>();
+	public static ArrayList<Tile> tiles = new ArrayList<Tile>();
 
 	public setTile() {
-		Card firstCard = new Card(3, cardName.CARD_ROAD_STRAIGHT_CITY);
-		Direction firstDir = new Direction(0, directionName.NORTH);
+		Card firstCard = new Card(cardId.CARD_ROAD_STRAIGHT_CITY);
+		directionId firstDir = directionId.NORTH;
 		Position firstPos = new Position(0, 0);
 		Tile firstTile = new Tile(firstCard, firstDir, firstPos);
 
@@ -21,95 +21,104 @@ public class setTile {
 		return null;
 	}
 
-	public Position neighbourPosition(Position p, Direction dir) {
+	public Position neighbourPosition(Position p, directionId dir) {
 		Position pos = new Position(p.x, p.y);
-		if (dir.name == directionName.NORTH) 
+		if (dir == directionId.NORTH) 
    			++pos.y;
-  		if (dir.name == directionName.WEST) 
+  		if (dir == directionId.WEST) 
    			--pos.x;
-  		if (dir.name == directionName.SOUTH) 
+  		if (dir == directionId.SOUTH) 
    			--pos.y;
-  		if (dir.name == directionName.EAST) 
+  		if (dir == directionId.EAST) 
   		 	++pos.x;
  		return pos;
 	}
 
-	public Tile computeNeighbour(setTile s, Tile t, Direction dir) {
+	public Tile computeNeighbour(setTile s, Tile t, directionId dir) {
 		Position pos = neighbourPosition(t.pos, dir);
 		return findTile(s, pos);
 	}
 
-	public void tileConnection(setTile s, Tile t) {
-		Direction dir = new Direction(0, directionName.NORTH);
-		for (int i = 0; i < Direction.Sides; ++i) {
-			t.neighbourTiles[i] = computeNeighbour(s, t, dir); 	
-			++dir.id;
-		}
+	public Tile neighbourTile(Tile t, directionId dir) {
+		return (t.neighbourTiles[dir.toInt()]);
 	}
-
-	public Tile neighbourTile(Tile t, Direction dir) {
-		return t.neighbourTiles[dir.id];
-	}
-
-	public void addSetTile(setTile s, Tile t) {
-		tiles.add(t);
-		//connection between neighbour cards
+	
+	public void addSetTile(setTile s, Move m) {
+		Tile t = new Tile(m.card, m.dir, m.onto);
+		s.tiles.add(t);
+		for (directionId dir : directionId.values()) 
+			t.tileConnection(t, computeNeighbour(s, t, dir), dir);
+		//TODO
 		//connection between nodes
 	}
 
 	public void removeSetTile(setTile s, Tile t) {
-		
+		for (directionId dir : directionId.values()) 
+			t.tileDisconnection(t, computeNeighbour(s, t, dir), dir);
+		//TODO
+		//disconnection between nodes
 	}
-	
+
 	public boolean matchCard(setTile s, Tile t) {
-		//addSetTile(s, t);
-		Direction dir = new Direction(0, directionName.NORTH);
 		int count = 0;
-		for (int i = 0; i < Direction.Sides; ++i) {
-			if (t.matchSide(t, neighbourTile(t, dir), dir) == true) {
+		for (directionId dir : directionId.values()) {
+			if (t.matchSide(t, computeNeighbour(s, t, dir), dir) == true) {
 				++count;
-				++dir.id;
 			}
 		}
-		if (count == Direction.Sides)
+		if (count == t.SIDES)
 			return true;
 		return false;
 	}
-
+	
 	public boolean isConnectable(setTile s, Tile t) {
-		Direction dir = new Direction(1, directionName.WEST);
-		for (int i = 0; i < Direction.Sides; ++i) {
-			if (matchCard(s, t) == true) 
+		directionId rot = directionId.WEST;
+		for (directionId dir : directionId.values()) {
+			if (matchCard(s, t) == true) {
+				t.dir = dir;
 				return true;	
-		t.rotation(t, dir);
+			}
+		t.rotation(t, rot);
 		}
 		return false;
 	}
-
+	
 	public boolean isPlayable(setTile s, Card card) {
-		Position pos = new Position(0, 0);
-		Direction dir = new Direction(0, directionName.NORTH);
-		Direction dir2 = new Direction(0, directionName.NORTH);
-		Tile t = new Tile(card, dir, pos);
+		Tile t = new Tile(card, directionId.NORTH, new Position(0, 0));
 		for (int i = 0; i < s.tiles.size(); ++i) {
-			for (int j = 0; j < Direction.Sides; ++j) {
-			t.pos = neighbourPosition(s.tiles.get(i).pos, dir2);
-			++dir2.id; 
-			dir2.id %= Direction.Sides;
-				if (t.isEmptyTile(neighbourTile(s.tiles.get(i), dir2)) == true && isConnectable(s, t) == true)
+			for (directionId dir : directionId.values()) {
+				t.pos = neighbourPosition(s.tiles.get(i).pos, dir);
+				if (t.isEmptyTile(computeNeighbour(s, s.tiles.get(i), dir)) == true && isConnectable(s, t) == true)
 					return true;
 			}
 		}
 		return false;
 	}
 
-	//validCardMove(setTile s, ) {}
-
-	//validMeepleMove(setTile s, ) {}
-
-	//validMove(setTile s, ) {}
-
-	public static void main (String[] args) {
-		
+	public boolean validCardMove(setTile s, Move m) {
+		Tile t = new Tile(m.card, m.dir, m.onto);
+		if (matchCard(s, t) == true)
+			return true;
+		return false;
 	}
+
+	public boolean validMeepleMove(setTile s, Move m) {
+		//TODO
+		return true;
+	}
+
+	public boolean validMove(setTile s, Move m) {
+		if (validCardMove(s, m) == true && validMeepleMove(s, m) == true) 
+			return true;
+		return false;
+	}
+	/*
+	public static void main (String[] args) {
+		setTile s = new setTile();
+		Card c = new Card(cardId.CARD_MONASTERY_ROAD);
+		
+		Move m = new Move(0, c, new Position(-1, 0), directionId.NORTH, Place.NO_MEEPLE);
+		System.out.println(s.validMove(s, m));
+
+	}*/
 }

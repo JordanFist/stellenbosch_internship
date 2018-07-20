@@ -1,14 +1,18 @@
-//package carcassonne.core;
+package carcassonne.core;
 
 public class Players {
-	protected int numberOfPlayers;
-	protected Player players[];
+	public int numberOfPlayers;
+	public Player players[];
 
 	public Players(int numberOfPlayers) {
 		this.numberOfPlayers = numberOfPlayers;
 		players = new Player[numberOfPlayers];
 		for (int i = 0; i < numberOfPlayers; ++i) 
 			players[i] = new Player(i);
+	}
+	
+	public Player firstPlayer(Players p) {
+		return (p.players[0]);
 	}
 
 	public int remainingPlayers(Players p) {
@@ -20,7 +24,7 @@ public class Players {
 		return res;	
 	}
 
-	public int computeNextPlayer(Players players, Player player) {
+	public Player computeNextPlayer(Players players, Player player) {
 		int id = player.id;
 		if (id == players.numberOfPlayers - 1)
 			id = 0;
@@ -32,7 +36,7 @@ public class Players {
 			else
 				++id;
 		}	
-		return id;
+		return players.players[id];
 	}
 
 	public void ejectPlayer(Player p) {

@@ -1,12 +1,12 @@
-//package carcassonne.core;
+package carcassonne.core;
 import java.util.Random;
 
 public class Deck {
-	public static final int numberOfCards = 71;
-	public static final int effective[] = {2, 4, 1, 3, 5, 2, 1, 3, 2, 3, 3, 3, 2, 3, 2, 3, 1, 3, 2, 1, 8, 9, 4, 1};
+	public static final int NUMBER_OF_CARDS = 71;
+	public static final int EFFECTIVE[] = {2, 4, 1, 3, 5, 2, 1, 3, 2, 3, 3, 3, 2, 3, 2, 3, 1, 3, 2, 1, 8, 9, 4, 1};
 
-	protected int nextCard;
-	protected Card pile[] = new Card[numberOfCards];
+	public int nextCard;
+	public Card pile[] = new Card[NUMBER_OF_CARDS];
 	
 	public Deck() {
 		this.nextCard = 0;
@@ -15,12 +15,12 @@ public class Deck {
 	}
 
 	public boolean deckIsEmpty(Deck d) {
-		return (d.nextCard == numberOfCards);
+		return (d.nextCard == NUMBER_OF_CARDS);
 	}
 
 	public Card drawCard(Deck d) {
-		Card res = d.pile[d.nextCard];
-		if (d.nextCard < numberOfCards) {
+		if (d.nextCard < NUMBER_OF_CARDS) {
+			Card res = d.pile[d.nextCard];
 			++d.nextCard;
 			return res;
 		}
@@ -31,8 +31,8 @@ public class Deck {
 		int n;
 		Card swap;
 		Random rand = new Random(); 
-		for (int i = 0; i < numberOfCards; ++i) {
-			n = rand.nextInt(numberOfCards);	
+		for (int i = 0; i < NUMBER_OF_CARDS; ++i) {
+			n = rand.nextInt(NUMBER_OF_CARDS);	
 			swap = d.pile[n];
 			d.pile[n] = d.pile[i];
 			d.pile[i] = swap;
@@ -41,9 +41,9 @@ public class Deck {
 
 	public void fillDeck(Deck d) {
 		int i = 0, j = 0;
-		for (cardName name : cardName.values()) {
-			for (int k = 0; k < effective[j]; ++k) {
-				d.pile[i] = new Card(j, name);
+		for (cardId id : cardId.values()) {
+			for (int k = 0; k < EFFECTIVE[j]; ++k) {
+				d.pile[i] = new Card(id);
 				++i;
 			}
 			++j;
@@ -52,9 +52,11 @@ public class Deck {
 	/*
 	public static void main(String[] args) {
 		Deck deck = new Deck();
-		for (int i = 0; i <numberOfCards; ++i) {
-			System.out.println(deck.drawCard(deck).name);
+		for (int i = 0; i < NUMBER_OF_CARDS; ++i) {
+			System.out.print(i + "  ");
+			System.out.println(deck.drawCard(deck).id);
 			System.out.println(deck.deckIsEmpty(deck));
 		}
+		System.out.println(deck.drawCard(deck));
 	}*/
 }

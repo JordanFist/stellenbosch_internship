@@ -1,8 +1,8 @@
-//package carcassonne.core;
+package carcassonne.core;
 
 public class Position {
-	protected int x;
-	protected int y;
+	public int x;
+	public int y;
 
 	public Position(int x, int y) {
 		this.x = x;

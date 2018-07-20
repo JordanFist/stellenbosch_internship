@@ -1,7 +1,7 @@
-//package carcassonne.core;
+package carcassonne.core;
 
 public class Landscape {
-	public static final String cardsContent[][] = {
+	public static final String CARDS_CONTENT[][] = {
 		{"PLAIN","PLAIN","PLAIN","PLAIN","PLAIN","PLAIN","PLAIN","ROAD","PLAIN","PLAIN","PLAIN","PLAIN","ABBEY"},
 		{"PLAIN","PLAIN","PLAIN","PLAIN","PLAIN","PLAIN","PLAIN","PLAIN","PLAIN","PLAIN","PLAIN","PLAIN","ABBEY"},
 		{"CITY","CITY","CITY","CITY","CITY","CITY","CITY","CITY","CITY","CITY","CITY","CITY","CITY"},
