@@ -1,14 +1,13 @@
 package carcassonne.core;
 import java.util.ArrayList;
 
+import carcassonne.core.tiles.RoadStraightCity;
+
 public class setTile {
 	public static ArrayList<Tile> tiles = new ArrayList<Tile>();
 
 	public setTile() {
-		Card firstCard = new Card(cardId.CARD_ROAD_STRAIGHT_CITY);
-		directionId firstDir = directionId.NORTH;
-		Position firstPos = new Position(0, 0);
-		Tile firstTile = new Tile(firstCard, firstDir, firstPos);
+		RoadStraightCity firstTile = new RoadStraightCity();
 
 		tiles.add(firstTile); 
 	}
@@ -44,7 +43,7 @@ public class setTile {
 	}
 	
 	public void addSetTile(setTile s, Move m) {
-		Tile t = new Tile(m.card, m.dir, m.onto);
+		Tile t = m.tile;
 		s.tiles.add(t);
 		for (directionId dir : directionId.values()) 
 			t.tileConnection(t, computeNeighbour(s, t, dir), dir);
@@ -55,6 +54,7 @@ public class setTile {
 	public void removeSetTile(setTile s, Tile t) {
 		for (directionId dir : directionId.values()) 
 			t.tileDisconnection(t, computeNeighbour(s, t, dir), dir);
+		s.tiles.remove(t);
 		//TODO
 		//disconnection between nodes
 	}
@@ -83,21 +83,21 @@ public class setTile {
 		return false;
 	}
 	
-	public boolean isPlayable(setTile s, Card card) {
-		Tile t = new Tile(card, directionId.NORTH, new Position(0, 0));
+	public boolean isPlayable(setTile s, Tile t) {   
 		for (int i = 0; i < s.tiles.size(); ++i) {
 			for (directionId dir : directionId.values()) {
 				t.pos = neighbourPosition(s.tiles.get(i).pos, dir);
-				if (t.isEmptyTile(computeNeighbour(s, s.tiles.get(i), dir)) == true && isConnectable(s, t) == true)
+				if (t.isEmptyTile(computeNeighbour(s, s.tiles.get(i), dir)) == true && isConnectable(s, t) == true) {
+					//t.reInitTile(t);
 					return true;
+				}	
 			}
 		}
 		return false;
 	}
 
 	public boolean validCardMove(setTile s, Move m) {
-		Tile t = new Tile(m.card, m.dir, m.onto);
-		if (matchCard(s, t) == true)
+		if (matchCard(s, m.tile) == true)
 			return true;
 		return false;
 	}
@@ -107,7 +107,7 @@ public class setTile {
 		return true;
 	}
 
-	public boolean validMove(setTile s, Move m) {
+	public boolean validMove(setTile s, Move m) { 
 		if (validCardMove(s, m) == true && validMeepleMove(s, m) == true) 
 			return true;
 		return false;
@@ -115,9 +115,11 @@ public class setTile {
 	/*
 	public static void main (String[] args) {
 		setTile s = new setTile();
-		Card c = new Card(cardId.CARD_MONASTERY_ROAD);
+		MonasteryRoad c = new MonasteryRoad();
+		c.pos = new Position(1, 0);
+		c.dir = directionId.NORTH;
 		
-		Move m = new Move(0, c, new Position(-1, 0), directionId.NORTH, Place.NO_MEEPLE);
+		Move m = new Move(0, c, Place.NO_MEEPLE);
 		System.out.println(s.validMove(s, m));
 
 	}*/

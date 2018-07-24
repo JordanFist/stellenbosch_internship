@@ -4,22 +4,18 @@ public class Tile {
 	public static final int NUMBER_OF_DIRECTIONS = 13;
 	public static final int SIDES = 4;
 	
-	public Card card;
-	public directionId dir;
-	public Position pos;
+	public String name;
+	public directionId dir = directionId.NORTH;
+	public Position pos = new Position(0, 0);
 	public Tile neighbourTiles[] = new Tile[SIDES];
 	public Node nodes[] = new Node[NUMBER_OF_DIRECTIONS];
 
-	public Tile(Card card, directionId dir, Position pos) {
-		this.card = card;
+	public Tile(directionId dir, Position Pos) {
 		this.dir = dir;
 		this.pos = pos;
-		for (int i = 0; i < NUMBER_OF_DIRECTIONS; ++i)
-			this.nodes[i] = new Node(card, i);
-		//init neighbourNodes
 		rotation(this, dir);
 	}
-
+	
 	public boolean isEmptyTile(Tile t) {
 		return (t == null);
 	}
@@ -64,6 +60,18 @@ public class Tile {
 			t2.neighbourTiles[(dir.toInt() + 2) % SIDES] = null;
 		}
 	}
+
+	public void reInitTile(Tile t) {
+		if (t.dir == directionId.WEST)
+			rotation(t, directionId.EAST);
+		if (t.dir == directionId.SOUTH)
+			rotation(t, directionId.SOUTH);
+		if (t.dir == directionId.EAST)
+			rotation(t, directionId.WEST);	
+		t.dir = directionId.NORTH;
+		t.pos.x = 0; t.pos.y = 0;
+	}
+
 	/*
 	public static void main(String[] args) {
 		

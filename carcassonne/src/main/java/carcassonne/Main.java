@@ -1,14 +1,17 @@
 package carcassonne;
 
-import carcassonne.core.Deck;
-import carcassonne.core.Players;
-import carcassonne.core.Move;
-import carcassonne.core.setTile;
-import carcassonne.core.Client;
-import carcassonne.core.Card;
-import carcassonne.core.Player;
+import carcassonne.core.*;
 
 public class Main {
+	/*
+	public static void display(Tile t) {
+		for (int i = 0; i < 4; ++i) {
+			if (t.neighbourTiles[i] != null)
+				System.out.println(t.neighbourTiles[i].card.id);
+			else 
+				System.out.println("null");
+		}
+	}*/
 
 	public static void main(String[] args) {
 
@@ -20,7 +23,7 @@ public class Main {
 		Client client = new Client();
 		Move playerMove;
 		Player playerTurn = players.firstPlayer(players);
-		Card card;
+		Tile tile;
 		int round = 1;
 
 		/* End of initialisation */
@@ -30,22 +33,33 @@ public class Main {
 		while (deck.deckIsEmpty(deck) == false && players.remainingPlayers(players) > 1) {
 			System.out.printf("================= ROUND : %d =================%n", round);
 			++round;
-			card = deck.drawCard(deck);
+			tile = deck.drawCard(deck);
 
-			if (board.isPlayable(board, card) == true) {
+			if (round == 60) {
+				for (int i = 0; i < board.tiles.size(); ++i) {
+					System.out.print(board.tiles.get(i).pos.x);	
+					System.out.println(board.tiles.get(i).pos.y);
+					System.out.println();
+				}
+				System.exit(1);
+			}
+			
+			if (board.isPlayable(board, tile) == true) {
 				//playerMove.askMove(card, playerTurn, playerMove);
-				playerMove = client.clientMove(board, card, playerTurn);
+				playerMove = client.clientMove(board, tile, playerTurn);
 				
 				if (board.validMove(board, playerMove) == true) {
 					board.addSetTile(board, playerMove);
 					System.out.println();
-					System.out.printf("player: %d\n\ncard: %s \t dir: %s \t x: %d \t y: %d \n\n", playerTurn.id, card.id, playerMove.dir, playerMove.onto.x, playerMove.onto.y);
+					System.out.printf("player: %d\n\ncard: %s \t dir: %s \t x: %d \t y: %d \n\n", playerTurn.id, tile.name, playerMove.tile.dir, playerMove.tile.pos.x, playerMove.tile.pos.y);
+
 				} else
 					players.ejectPlayer(playerTurn);
 				playerTurn = players.computeNextPlayer(players, playerTurn); 	
 			} else 
-				System.out.println("This card is unplayable");
+				System.out.printf("%s is unplayable\n", tile.name);
 		}
+
 
 		/* End of the game loop */
 		

@@ -3,16 +3,12 @@ import java.util.Scanner;
 
 public class Move {
 	public int idPlayer;
-	public Card card;
-	public Position onto;
-	public directionId dir;
+	public Tile tile;
 	public Place place;
 
-	public Move (int idPlayer, Card card, Position onto, directionId dir, Place place) {
+	public Move (int idPlayer, Tile tile, Place place) {
 		this.idPlayer = idPlayer;
-		this.card = card;
-		this.onto = onto;
-		this.dir = dir;
+		this.tile = tile;
 		this.place = place;
 	}
 	/*
