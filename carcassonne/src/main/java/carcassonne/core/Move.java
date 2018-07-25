@@ -2,12 +2,12 @@ package carcassonne.core;
 import java.util.Scanner;
 
 public class Move {
-	public int idPlayer;
+	public Player player;
 	public Tile tile;
-	public Place place;
+	public placeId place;
 
-	public Move (int idPlayer, Tile tile, Place place) {
-		this.idPlayer = idPlayer;
+	public Move (Player player, Tile tile, placeId place) {
+		this.player = player;
 		this.tile = tile;
 		this.place = place;
 	}

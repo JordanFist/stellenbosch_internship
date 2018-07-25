@@ -14,4 +14,8 @@ public class Player {
 		this.numberOfMeeples = STARTING_NUMBER_OF_MEEPLES;
 		this.points = 0;	
 	}	
+
+	public void eject() {
+		isAlive = false;
+	}
 }

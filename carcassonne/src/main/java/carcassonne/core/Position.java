@@ -8,4 +8,17 @@ public class Position {
 		this.x = x;
 		this.y = y;
 	} 
+	
+	public Position neighbourPosition(directionId dir) {
+		Position pos = new Position(this.x, this.y);
+		if (dir == directionId.NORTH) 
+   			++pos.y;
+  		if (dir == directionId.WEST) 
+   			--pos.x;
+  		if (dir == directionId.SOUTH) 
+   			--pos.y;
+  		if (dir == directionId.EAST) 
+  		 	++pos.x;
+ 		return pos;
+	}
 }

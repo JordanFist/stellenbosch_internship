@@ -1,53 +1,50 @@
 package carcassonne.core;
 
+import java.util.ArrayList;
+
 public class Players {
-	public int numberOfPlayers;
-	public Player players[];
+	int numberOfPlayers;
+	public ArrayList<Player> players = new ArrayList<Player>();
 
 	public Players(int numberOfPlayers) {
 		this.numberOfPlayers = numberOfPlayers;
-		players = new Player[numberOfPlayers];
 		for (int i = 0; i < numberOfPlayers; ++i) 
-			players[i] = new Player(i);
+			players.add(new Player(i));
 	}
 	
-	public Player firstPlayer(Players p) {
-		return (p.players[0]);
+	public Player first() {
+		return (players.get(0));
 	}
 
-	public int remainingPlayers(Players p) {
+	public int remaining() {
 		int res = 0;
-		for (int i = 0; i < p.numberOfPlayers; ++i) {
-			if (p.players[i].isAlive == true)
+		for (int i = 0; i < players.size(); ++i) {
+			if (players.get(i).isAlive == true)
 				++res;
 		}
 		return res;	
 	}
 
-	public Player computeNextPlayer(Players players, Player player) {
+	public Player computeNext(Player player) {
 		int id = player.id;
-		if (id == players.numberOfPlayers - 1)
+		if (id == numberOfPlayers - 1)
 			id = 0;
 		else
 			++id;
-		while (players.players[id].isAlive == false) {
-			if (id == players.numberOfPlayers - 1)
+		while (players.get(id).isAlive == false) {
+			if (id == numberOfPlayers - 1)
 				id = 0;
 			else
 				++id;
-		}	
-		return players.players[id];
-	}
-
-	public void ejectPlayer(Player p) {
-		p.isAlive = false;
+		}
+		return players.get(id);
 	}
 	/*
 	public static void main(String[] args) {
 		Players players = new Players(3);
-		System.out.println(players.remainingPlayers(players));
-		players.ejectPlayer(players.players[1]);
-		System.out.println(players.remainingPlayers(players));
-		System.out.println(players.computeNextPlayer(players, players.players[0]));
+		System.out.println(players.remaining());
+		players.players.get(1).eject();
+		System.out.println(players.remaining());
+		System.out.println(players.computeNextPlayer(players.players.get(0)).id);
 	}*/
 }

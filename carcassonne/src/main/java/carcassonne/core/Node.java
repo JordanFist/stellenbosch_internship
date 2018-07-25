@@ -1,6 +1,8 @@
 package carcassonne.core;
 
 import java.util.ArrayList;
+import java.util.Stack;
+import java.util.Collections;
 
 public class Node {
 	public static final int CONNEXIONS_PER_SIDE = 3;
@@ -14,32 +16,31 @@ public class Node {
 		this.meepleOwner = null;
 	}
 
-	public static void nodeConnection(Node n1, Node n2) {
-		if (n1.neighbourNodes.size() < CONNEXIONS_PER_SIDE && n2.neighbourNodes.size() < CONNEXIONS_PER_SIDE) {
-			n1.neighbourNodes.add(n2);
-			n2.neighbourNodes.add(n1);
+	public void nodeConnection(Node n) {
+		if (neighbourNodes.size() < CONNEXIONS_PER_SIDE && n.neighbourNodes.size() < CONNEXIONS_PER_SIDE) {
+			neighbourNodes.add(n);
+			n.neighbourNodes.add(this);
 		} else
 			System.out.println("ERROR neighbourNodes is full");
 	}	
 	
-	public void nodeDisconnection(Node n1, Node n2) {
-		for (int i = 0; i < Math.min(n1.neighbourNodes.size(), n2.neighbourNodes.size()); ++i) {
-			if (n1.neighbourNodes.get(i) == n2)
-				n1.neighbourNodes.remove(i);
-			if (n2.neighbourNodes.get(i) == n1)
-				n2.neighbourNodes.remove(i);	
+	public void nodeDisconnection(Node n) {
+		for (int i = 0; i < Math.min(neighbourNodes.size(), n.neighbourNodes.size()); ++i) {
+			if (neighbourNodes.get(i) == n)
+				neighbourNodes.remove(i);
+			if (n.neighbourNodes.get(i) == this)
+				n.neighbourNodes.remove(i);	
 		}
 	}
 
-	public boolean isMeepleInArea(Node n) {
+	public boolean isMeepleInArea() {
 		Node check;
-		ArrayList<Node> stack = new ArrayList<Node>();
-		ArrayList<Node> visited = new ArrayList<Node>();
-		stack.add(n);
-		visited.add(n);
-		while (stack.size() != 0) {
-			check = stack.get(stack.size() - 1);
-			stack.remove(stack.size()- 1);
+		Stack<Node> stack = new Stack<Node>();
+		Stack<Node> visited = new Stack<Node>();
+		stack.add(this);
+		visited.add(this);
+		while (stack.isEmpty() == false) {
+			check = stack.remove(0);
 			if (check != null && check.meepleOwner != null)
 				return true;
 			for (int i = 0; i < CONNEXIONS_PER_SIDE; ++i) {

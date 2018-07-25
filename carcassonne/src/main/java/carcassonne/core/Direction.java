@@ -1,7 +1,6 @@
 package carcassonne.core;
 
 public class Direction {
-
 	public static int getDirection(directionId dir) {
 		return (3 * dir.toInt() + 1);
 	}

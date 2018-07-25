@@ -13,99 +13,105 @@ public class Tile {
 	public Tile(directionId dir, Position Pos) {
 		this.dir = dir;
 		this.pos = pos;
-		rotation(this, dir);
+		rotation(dir);
 	}
 	
 	public boolean isEmptyTile(Tile t) {
 		return (t == null);
 	}
+
+	public Tile neighbour(directionId dir) {
+		return (neighbourTiles[dir.toInt()]);
+	}
 	
-	public void rotation(Tile t, directionId dir) {
+	public void rotation(directionId dir) {
 		Node swap;
 		for (int i = 0; i < 3 * dir.toInt(); ++i) {
-			swap = t.nodes[NUMBER_OF_DIRECTIONS - 2];
+			swap = nodes[NUMBER_OF_DIRECTIONS - 2];
 			for (int j = NUMBER_OF_DIRECTIONS - 2; j > 0; --j)
-				t.nodes[j] = t.nodes[j - 1];
-			t.nodes[0] = swap; 	
+				nodes[j] = nodes[j - 1];
+			nodes[0] = swap; 	
 		}
 	}
 
-	public String getFace(Tile t, directionId dir) {
-		return t.nodes[3 * dir.toInt() + 1].landType;
+	public String getFace(directionId dir) {
+		return nodes[Direction.getDirection(dir)].landType;
 	}
 
-	public String getOppositeFace(Tile t, directionId dir) {
-		return t.nodes[(3 * dir.toInt() + 7) % (NUMBER_OF_DIRECTIONS - 1)].landType;
+	public String getOppositeFace(directionId dir) {
+		return nodes[Direction.getOppositeDirection(dir)].landType;
 	}
 	
-	// dir : position of t2 compared to t1
-	public boolean matchSide(Tile t1, Tile t2, directionId dir) {
-		if (t2 == null)
+	// dir : position of t compared to this
+	public boolean matchSide(Tile t, directionId dir) {
+		if (t == null)
 			return true;
-		String face1 = getFace(t1, dir);
-		String face2 = getOppositeFace(t2, dir);
+		String face1 = getFace(dir);
+		String face2 = t.getOppositeFace(dir);
 		return (face1.equals(face2));
 	}
 
-	public void tileConnection(Tile t1, Tile t2, directionId dir) {
-		if (t2 != null) {
-			t1.neighbourTiles[dir.toInt()] = t2;
-			t2.neighbourTiles[(dir.toInt() + 2) % SIDES] = t1;
+	public void connection(Tile t, directionId dir) {
+		if (t != null) {
+			neighbourTiles[dir.toInt()] = t;
+			t.neighbourTiles[(dir.toInt() + 2) % SIDES] = this;
 		}
 	}
 
-	public void tileDisconnection(Tile t1, Tile t2, directionId dir) {
-		if (t2 != null) {
-			t1.neighbourTiles[dir.toInt()] = null;
-			t2.neighbourTiles[(dir.toInt() + 2) % SIDES] = null;
+	public void disconnection(Tile t, directionId dir) {
+		if (t != null) {
+			neighbourTiles[dir.toInt()] = null;
+			t.neighbourTiles[(dir.toInt() + 2) % SIDES] = null;
 		}
 	}
 
-	public void reInitTile(Tile t) {
-		if (t.dir == directionId.WEST)
-			rotation(t, directionId.EAST);
-		if (t.dir == directionId.SOUTH)
-			rotation(t, directionId.SOUTH);
-		if (t.dir == directionId.EAST)
-			rotation(t, directionId.WEST);	
-		t.dir = directionId.NORTH;
-		t.pos.x = 0; t.pos.y = 0;
+	public void reInit() {
+		if (dir == directionId.WEST)
+			rotation(directionId.EAST);
+		if (dir == directionId.SOUTH)
+			rotation(directionId.SOUTH);
+		if (dir == directionId.EAST)
+			rotation(directionId.WEST);	
+		dir = directionId.NORTH;
+		pos.x = 0; pos.y = 0;
 	}
-
 	/*
 	public static void main(String[] args) {
 		
-		Card card = new Card(cardId.CARD_MONASTERY_ROAD);
-		Position pos = new Position(0, 0);	
-		directionId dir = directionId.NORTH;
-		Tile tile = new Tile(card, dir, pos);
-		
-		Position pos2 = new Position(-1, 0);
-		directionId dir2 = directionId.NORTH;
-		Tile tile2 = new Tile(card, dir2, pos2);
-		
+		MonasteryRoad t1 = new MonasteryRoad();
+		MonasteryRoad t2 = new MonasteryRoad();
+		t2.pos = new Position(-1, 0);
 
-		directionId dir3 = directionId.WEST;
-		tile.rotation(tile2, dir3);
-		tile.rotation(tile2, dir3);
+		directionId dir = directionId.WEST;
+		t2.rotation(dir);
 
-		//System.out.println(tile.matchSide(tile, tile2, dir3));
+		System.out.println(t1.matchSide(t2, dir));
 		
 		for (int i = 0 ; i < 13; ++i) {
-			System.out.println(tile.nodes[i].landType);
+			System.out.println(t1.nodes[i].landType);
 			//System.out.println(tile.neighbourTiles[i]);
 		}
+
 		System.out.println();
+
 		for (int i = 0 ; i < 13; ++i) {
-			System.out.println(tile2.nodes[i].landType);
+			System.out.println(t2.nodes[i].landType);
 		}
 
-		tile.tileConnection(tile, tile2, dir3);
-		tile.tileDisconnection(tile, tile2, dir3);
+		System.out.println();
+		t1.connection(t2, dir);
+
+		for (int i = 0; i < 4; ++i) {
+			System.out.println(t1.neighbourTiles[i]);
+			System.out.println(t2.neighbourTiles[i]);
+		}
+		
+		t1.disconnection(t2, dir);
+		System.out.println();
 		
 		for (int i = 0; i < 4; ++i) {
-			System.out.println(tile.neighbourTiles[i]);
-			System.out.println(tile2.neighbourTiles[i]);
+			System.out.println(t1.neighbourTiles[i]);
+			System.out.println(t2.neighbourTiles[i]);
 		}
 	}*/
 }

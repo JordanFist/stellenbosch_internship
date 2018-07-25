@@ -1,32 +1,82 @@
 package carcassonne.core;
 
-enum Place {
-	POS_NORTH_EAST(0),  //0.  {NE}
-	POS_NORTH(1),       //1.  {N}
-	POS_NORTH_WEST(2),  //2.  {NW}
-	POS_WEST_NORTH(3),  //3.  {WN}
-	POS_WEST(4),        //4.  {W}
-	POS_WEST_SOUTH(5),  //5.  {WS}
-	POS_SOUTH_WEST(8),  //6.  {SW}
-	POS_SOUTH(7),       //7.  {S}
-	POS_SOUTH_EAST(6),  //8.  {SE}
- 	POS_EAST_SOUTH(11),  //9.  {ES}
- 	POS_EAST(10),       //10. {E}
- 	POS_EAST_NORTH(9), //11. {EN}  
- 	POS_CENTER(12),     //12. {C}
-	NO_MEEPLE(13); 	    //13. special place for not placing a meeple
-	
-	public final int id;
-
-	private Place(int id) {
-		this.id = id;
-	}
-
-	public int toInt() {
-		return id;
+public class Place {
+	/*
+	public static int getPlace(placeId p) {
+		return p.toInt();
 	}
 	
-	public String toString() {
-		return String.valueOf(id);
+	public static int getOppositePlace(placeId p) {
+		if (p == placeId.POS_NORTH_WEST)
+			return placeId.POS_SOUTH_WEST.toInt();
+		if (p == placeId.POS_NORTH)
+			return placeId.POS_SOUTH.toInt();
+		if (p == placeId.POS_NORTH_EAST)
+			return placeId.POS_SOUTH_EAST.toInt();
+
+
+		if (p == placeId.POS_WEST_NORTH)
+			return placeId.POS_EAST_NORTH.toInt();
+		if (p == placeId.POS_WEST)
+			return placeId.POS_EAST.toInt();
+		if (p == placeId.POS_WEST_SOUTH)
+			return placeId.POS_EAST_SOUTH.toInt();
+
+
+		if (p == placeId.POS_SOUTH_EAST)
+			return placeId.POS_NORTH_EAST.toInt();
+		if (p == placeId.POS_SOUTH)
+			return placeId.POS_NORTH.toInt();
+		if (p == placeId.POS_SOUTH_WEST)
+			return placeId.POS_NORTH_WEST.toInt();
+
+
+		if (p == placeId.POS_EAST_SOUTH)
+			return placeId.POS_WEST_SOUTH.toInt();
+		if (p == placeId.POS_EAST)
+			return placeId.POS_WEST.toInt();
+		if (p == placeId.POS_EAST_NORTH)
+			return placeId.POS_WEST_NORTH.toInt();
+		else {
+			System.out.println("ERROR in place functions");
+			return -1;		
+		}
+	}*/
+
+	public static int getOppositePlace(int p) {
+		if (p == 0)
+			return 8;
+		if (p == 1)
+			return 7;
+		if (p == 2)
+			return 6;
+
+
+		if (p == 3)
+			return 11;
+		if (p == 4)
+			return 10;
+		if (p == 5)
+			return 9;
+
+
+		if (p == 6)
+			return 2;
+		if (p == 7)
+			return 1;
+		if (p == 8)
+			return 0;
+
+
+		if (p == 9)
+			return 5;
+		if (p == 10)
+			return 4;
+		if (p == 11)
+			return 3;
+		else {
+			System.out.println("ERROR in place functions");
+			return -1;		
+		}
 	}
 }

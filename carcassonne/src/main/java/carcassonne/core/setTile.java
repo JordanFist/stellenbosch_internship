@@ -7,62 +7,54 @@ public class setTile {
 	public static ArrayList<Tile> tiles = new ArrayList<Tile>();
 
 	public setTile() {
-		RoadStraightCity firstTile = new RoadStraightCity();
-
-		tiles.add(firstTile); 
+		tiles.add(new RoadStraightCity()); 
 	}
 
-	public Tile findTile(setTile s, Position pos) {
-		for (Tile t : s.tiles) {
+	public Tile findTile(Position pos) {
+		for (Tile t : this.tiles) {
 			if (t.pos.x == pos.x && t.pos.y == pos.y)	
 				return t;
 		}
 		return null;
 	}
 
-	public Position neighbourPosition(Position p, directionId dir) {
-		Position pos = new Position(p.x, p.y);
-		if (dir == directionId.NORTH) 
-   			++pos.y;
-  		if (dir == directionId.WEST) 
-   			--pos.x;
-  		if (dir == directionId.SOUTH) 
-   			--pos.y;
-  		if (dir == directionId.EAST) 
-  		 	++pos.x;
- 		return pos;
-	}
-
-	public Tile computeNeighbour(setTile s, Tile t, directionId dir) {
-		Position pos = neighbourPosition(t.pos, dir);
-		return findTile(s, pos);
-	}
-
-	public Tile neighbourTile(Tile t, directionId dir) {
-		return (t.neighbourTiles[dir.toInt()]);
+	public Tile computeNeighbour(Tile t, directionId dir) {
+		Position pos = t.pos.neighbourPosition(dir);
+		return findTile(pos);
 	}
 	
-	public void addSetTile(setTile s, Move m) {
-		Tile t = m.tile;
-		s.tiles.add(t);
-		for (directionId dir : directionId.values()) 
-			t.tileConnection(t, computeNeighbour(s, t, dir), dir);
-		//TODO
-		//connection between nodes
+	public void addSetTile(Tile t) {
+		tiles.add(t);
+		for (directionId dir : directionId.values()) {
+			t.connection(computeNeighbour(t, dir), dir);
+			for (int j = Node.CONNEXIONS_PER_SIDE * dir.toInt(); j < Node.CONNEXIONS_PER_SIDE * (dir.toInt() + 1); ++j) {
+				if (t.neighbour(dir) != null)
+					t.nodes[j].nodeConnection(t.neighbour(dir).nodes[(Place.getOppositePlace(j))]);
+			}	
+		}
 	}
 
-	public void removeSetTile(setTile s, Tile t) {
-		for (directionId dir : directionId.values()) 
-			t.tileDisconnection(t, computeNeighbour(s, t, dir), dir);
-		s.tiles.remove(t);
-		//TODO
-		//disconnection between nodes
+	public void addMeeple(Move m) {
+		if (m.place != placeId.NO_MEEPLE) {
+			m.tile.nodes[m.place.toInt()].meepleOwner = m.player;
+		}
 	}
 
-	public boolean matchCard(setTile s, Tile t) {
+	public void removeSetTile(Tile t) {
+		for (directionId dir : directionId.values()) {
+			for (int j = Node.CONNEXIONS_PER_SIDE * dir.toInt(); j < Node.CONNEXIONS_PER_SIDE * (dir.toInt() + 1); ++j) {
+				if (t.neighbour(dir) != null)
+					t.nodes[j].nodeDisconnection(t.neighbour(dir).nodes[(Place.getOppositePlace(j))]);
+			}	
+			t.disconnection(computeNeighbour(t, dir), dir);
+		}
+		tiles.remove(t);
+	}
+
+	public boolean matchCard(Tile t) {
 		int count = 0;
 		for (directionId dir : directionId.values()) {
-			if (t.matchSide(t, computeNeighbour(s, t, dir), dir) == true) {
+			if (t.matchSide(computeNeighbour(t, dir), dir) == true) {
 				++count;
 			}
 		}
@@ -71,24 +63,24 @@ public class setTile {
 		return false;
 	}
 	
-	public boolean isConnectable(setTile s, Tile t) {
+	public boolean isConnectable(Tile t) {
 		directionId rot = directionId.WEST;
 		for (directionId dir : directionId.values()) {
-			if (matchCard(s, t) == true) {
+			if (matchCard(t) == true) {
 				t.dir = dir;
 				return true;	
 			}
-		t.rotation(t, rot);
+			t.rotation(rot);
 		}
 		return false;
 	}
 	
-	public boolean isPlayable(setTile s, Tile t) {   
-		for (int i = 0; i < s.tiles.size(); ++i) {
+	public boolean isPlayable(Tile t) {   
+		for (int i = 0; i < tiles.size(); ++i) {
 			for (directionId dir : directionId.values()) {
-				t.pos = neighbourPosition(s.tiles.get(i).pos, dir);
-				if (t.isEmptyTile(computeNeighbour(s, s.tiles.get(i), dir)) == true && isConnectable(s, t) == true) {
-					//t.reInitTile(t);
+				t.pos = tiles.get(i).pos.neighbourPosition(dir);
+				if (t.isEmptyTile(computeNeighbour(tiles.get(i), dir)) == true && isConnectable(t) == true) {
+					t.reInit();
 					return true;
 				}	
 			}
@@ -96,31 +88,46 @@ public class setTile {
 		return false;
 	}
 
-	public boolean validCardMove(setTile s, Move m) {
-		if (matchCard(s, m.tile) == true)
+	public boolean validCardMove(Move m) {
+		if (matchCard(m.tile) == true)
 			return true;
 		return false;
 	}
 
-	public boolean validMeepleMove(setTile s, Move m) {
+	public boolean validMeepleMove(Move m) {
 		//TODO
 		return true;
 	}
 
-	public boolean validMove(setTile s, Move m) { 
-		if (validCardMove(s, m) == true && validMeepleMove(s, m) == true) 
+	public boolean validMove(Move m) { 
+		if (validCardMove(m) == true && validMeepleMove(m) == true) 
 			return true;
 		return false;
 	}
-	/*
+	
 	public static void main (String[] args) {
+		/*
+		setTile s = new setTile();	
+		Position pos1 = new Position(0, 0);
+		Position pos2 = s.neighbourPosition(pos1, directionId.NORTH);
+		System.out.printf("%d %d\n%d %d\n", pos1.x, pos1.y, pos2.x, pos2.y);
+
+		Tile t1 = new RoadStraightCity();
+		Tile t2 = new MonasteryRoad();
+		t1.pos = new Position(0, 1);
+		t2.pos = new Position(1, 0);
+		s.tiles.add(t1);
+		s.tiles.add(t2);
+		System.out.println(s.computeNeighbour(s, s.tiles.get(0), directionId.EAST));
+		System.out.printf("%d %d\n", t1.pos.x, t1.pos.y);*/
+
+		/*
 		setTile s = new setTile();
 		MonasteryRoad c = new MonasteryRoad();
-		c.pos = new Position(1, 0);
+		c.pos = new Position(0, 1);
 		c.dir = directionId.NORTH;
 		
 		Move m = new Move(0, c, Place.NO_MEEPLE);
-		System.out.println(s.validMove(s, m));
-
-	}*/
+		System.out.println(s.validMove(m));*/
+	}
 }
