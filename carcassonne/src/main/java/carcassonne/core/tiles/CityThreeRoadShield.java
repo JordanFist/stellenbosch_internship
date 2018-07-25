@@ -17,14 +17,14 @@ public class CityThreeRoadShield extends Tile {
 		for (int i = 0; i < Tile.NUMBER_OF_DIRECTIONS; ++i) 
 			this.nodes[i] = new Node(CARDS_CONTENT[i]);
 
-		Node.nodeConnection(this.nodes[0], this.nodes[1]);
-		Node.nodeConnection(this.nodes[1], this.nodes[2]);
-		Node.nodeConnection(this.nodes[2], this.nodes[3]);
-		Node.nodeConnection(this.nodes[3], this.nodes[4]);
-		Node.nodeConnection(this.nodes[4], this.nodes[5]);
-		Node.nodeConnection(this.nodes[9], this.nodes[10]);
-		Node.nodeConnection(this.nodes[10], this.nodes[11]);
-		Node.nodeConnection(this.nodes[11], this.nodes[0]);
-		Node.nodeConnection(this.nodes[5], this.nodes[12]);
+		this.nodes[0].nodeConnection(this.nodes[1]);
+		this.nodes[1].nodeConnection(this.nodes[2]);
+		this.nodes[2].nodeConnection(this.nodes[3]);
+		this.nodes[3].nodeConnection(this.nodes[4]);
+		this.nodes[4].nodeConnection(this.nodes[5]);
+		this.nodes[9].nodeConnection(this.nodes[10]);
+		this.nodes[10].nodeConnection(this.nodes[11]);
+		this.nodes[11].nodeConnection(this.nodes[0]);
+		this.nodes[5].nodeConnection(this.nodes[12]);
 	}
 }

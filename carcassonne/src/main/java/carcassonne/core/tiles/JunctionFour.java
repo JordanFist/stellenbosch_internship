@@ -18,9 +18,9 @@ public class JunctionFour extends Tile {
 			this.nodes[i] = new Node(CARDS_CONTENT[i]);
 
 
-		Node.nodeConnection(this.nodes[2], this.nodes[3]);
-		Node.nodeConnection(this.nodes[5], this.nodes[6]);
-		Node.nodeConnection(this.nodes[8], this.nodes[9]);
-		Node.nodeConnection(this.nodes[11], this.nodes[0]);
+		this.nodes[2].nodeConnection(this.nodes[3]);
+		this.nodes[5].nodeConnection(this.nodes[6]);
+		this.nodes[8].nodeConnection(this.nodes[9]);
+		this.nodes[11].nodeConnection(this.nodes[0]);
 	}
 }
