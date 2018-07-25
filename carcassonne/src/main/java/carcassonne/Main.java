@@ -22,7 +22,7 @@ public class Main {
 		setTile board = new setTile();
 		Client client = new Client();
 		Move playerMove;
-		Player playerTurn = players.firstPlayer(players);
+		Player playerTurn = players.first();
 		Tile tile;
 		int round = 1;
 
@@ -30,32 +30,24 @@ public class Main {
 		
 		/* Beginning of the game Loop */
 		
-		while (deck.deckIsEmpty(deck) == false && players.remainingPlayers(players) > 1) {
+		while (deck.isEmpty() == false && players.remaining() > 1) {
 			System.out.printf("================= ROUND : %d =================%n", round);
 			++round;
-			tile = deck.drawCard(deck);
-
-			if (round == 60) {
-				for (int i = 0; i < board.tiles.size(); ++i) {
-					System.out.print(board.tiles.get(i).pos.x);	
-					System.out.println(board.tiles.get(i).pos.y);
-					System.out.println();
-				}
-				System.exit(1);
-			}
+			tile = deck.drawCard();
 			
-			if (board.isPlayable(board, tile) == true) {
+			if (board.isPlayable(tile) == true) {
 				//playerMove.askMove(card, playerTurn, playerMove);
 				playerMove = client.clientMove(board, tile, playerTurn);
 				
-				if (board.validMove(board, playerMove) == true) {
-					board.addSetTile(board, playerMove);
+				if (board.validMove(playerMove) == true) {
+					board.addMeeple(playerMove);
+					board.addSetTile(playerMove.tile);
 					System.out.println();
-					System.out.printf("player: %d\n\ncard: %s \t dir: %s \t x: %d \t y: %d \n\n", playerTurn.id, tile.name, playerMove.tile.dir, playerMove.tile.pos.x, playerMove.tile.pos.y);
+					System.out.printf("player: %d\n\ncard: %s \t dir: %s \t x: %d \t y: %d \t place: %s \n\n", playerTurn.id, tile.name, playerMove.tile.dir, playerMove.tile.pos.x, playerMove.tile.pos.y, playerMove.place);
 
 				} else
-					players.ejectPlayer(playerTurn);
-				playerTurn = players.computeNextPlayer(players, playerTurn); 	
+					playerTurn.eject();
+				playerTurn = players.computeNext(playerTurn); 	
 			} else 
 				System.out.printf("%s is unplayable\n", tile.name);
 		}
