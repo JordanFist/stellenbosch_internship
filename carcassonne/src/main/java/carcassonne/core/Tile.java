@@ -5,6 +5,7 @@ public class Tile {
 	public static final int SIDES = 4;
 	
 	public String name;
+	public boolean shield = false;
 	public directionId dir = directionId.NORTH;
 	public Position pos = new Position(0, 0);
 	public Tile neighbourTiles[] = new Tile[SIDES];

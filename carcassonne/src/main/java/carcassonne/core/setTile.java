@@ -29,14 +29,8 @@ public class setTile {
 			t.connection(computeNeighbour(t, dir), dir);
 			for (int j = Node.CONNEXIONS_PER_SIDE * dir.toInt(); j < Node.CONNEXIONS_PER_SIDE * (dir.toInt() + 1); ++j) {
 				if (t.neighbour(dir) != null)
-					t.nodes[j].nodeConnection(t.neighbour(dir).nodes[(Place.getOppositePlace(j))]);
+					t.nodes[j].connection(t.neighbour(dir).nodes[(Place.getOppositePlace(j))]);
 			}	
-		}
-	}
-
-	public void addMeeple(Move m) {
-		if (m.place != placeId.NO_MEEPLE) {
-			m.tile.nodes[m.place.toInt()].meepleOwner = m.player;
 		}
 	}
 
@@ -44,7 +38,7 @@ public class setTile {
 		for (directionId dir : directionId.values()) {
 			for (int j = Node.CONNEXIONS_PER_SIDE * dir.toInt(); j < Node.CONNEXIONS_PER_SIDE * (dir.toInt() + 1); ++j) {
 				if (t.neighbour(dir) != null)
-					t.nodes[j].nodeDisconnection(t.neighbour(dir).nodes[(Place.getOppositePlace(j))]);
+					t.nodes[j].disconnection(t.neighbour(dir).nodes[(Place.getOppositePlace(j))]);
 			}	
 			t.disconnection(computeNeighbour(t, dir), dir);
 		}
@@ -95,18 +89,36 @@ public class setTile {
 	}
 
 	public boolean validMeepleMove(Move m) {
-		//TODO
+		if (m.place != placeId.NO_MEEPLE) {
+			Node startingNode = m.tile.nodes[m.place.toInt()];
+			if (m.player.meeples.size() < m.player.NUMBER_OF_MEEPLES && startingNode.isMeepleInArea() == false) 
+				return true;
+			return false;
+		}
 		return true;
 	}
 
 	public boolean validMove(Move m) { 
-		if (validCardMove(m) == true && validMeepleMove(m) == true) 
+		addSetTile(m.tile);
+		if (validCardMove(m) == true && validMeepleMove(m) == true) {
+			m.player.update(m);
+			removeSetTile(m.tile);
 			return true;
+		}
+		removeSetTile(m.tile);
 		return false;
 	}
-	
+
+	public void update(Move m) {
+		if (m.place != placeId.NO_MEEPLE) 
+			m.tile.nodes[m.place.toInt()].meepleOwner = m.player;
+		addSetTile(m.tile);
+		//Score.scoreRoad(m.tile);
+	}	
+
+	/*
 	public static void main (String[] args) {
-		/*
+		
 		setTile s = new setTile();	
 		Position pos1 = new Position(0, 0);
 		Position pos2 = s.neighbourPosition(pos1, directionId.NORTH);
@@ -119,15 +131,15 @@ public class setTile {
 		s.tiles.add(t1);
 		s.tiles.add(t2);
 		System.out.println(s.computeNeighbour(s, s.tiles.get(0), directionId.EAST));
-		System.out.printf("%d %d\n", t1.pos.x, t1.pos.y);*/
+		System.out.printf("%d %d\n", t1.pos.x, t1.pos.y);
 
-		/*
+		
 		setTile s = new setTile();
 		MonasteryRoad c = new MonasteryRoad();
 		c.pos = new Position(0, 1);
 		c.dir = directionId.NORTH;
 		
 		Move m = new Move(0, c, Place.NO_MEEPLE);
-		System.out.println(s.validMove(m));*/
-	}
+		System.out.println(s.validMove(m));
+	}*/
 }

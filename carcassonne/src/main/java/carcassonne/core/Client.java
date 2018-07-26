@@ -46,17 +46,17 @@ public class Client {
 		Move m = new Move(p, tile, placeId.NO_MEEPLE);
 		m = searchValidPositionCard(s, m);
 		
-		if (p.numberOfMeeples > 0) {
+		if (p.meeples.size() < Player.NUMBER_OF_MEEPLES) {
 			for (placeId place : placeId.values()) {
 				if (place != placeId.NO_MEEPLE) {
 					m.place = place;
 					if (searchValidPositionMeeple(s, m) == true) {
-						--p.numberOfMeeples;
-						break;
+						return m;
 					}
 				}
 			}
 		}
+		m.place = placeId.NO_MEEPLE;
 		return m;
 	}
 }
