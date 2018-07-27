@@ -17,6 +17,7 @@ public class Main {
 		Players players = new Players(3);
 		setTile board = new setTile();
 		Client client = new Client();
+		Score score = new Score();
 		Move playerMove;
 		Player playerTurn = players.first();
 		Tile tile;
@@ -35,7 +36,7 @@ public class Main {
 				playerMove = client.clientMove(board, tile, playerTurn);
 				
 				if (board.validMove(playerMove) == true) {
-					board.update(playerMove);
+					board.update(playerMove, score);
 					display(playerMove, playerTurn);
 				} else
 					playerTurn.eject();
@@ -43,9 +44,10 @@ public class Main {
 			} else 
 				System.out.printf("%s is unplayable\n", tile.name);
 		}
-
+		
+		//score.end(players);
+		players.displayScore();
 
 		/* End of the game loop */
-		
 	}
 }
