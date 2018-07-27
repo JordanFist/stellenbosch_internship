@@ -16,6 +16,11 @@ public class Player {
 		this.points = 0;	
 	}	
 
+	public void giveBackMeeple(Node n) {
+		meeples.remove(n);
+		System.out.printf("player %d gets back a meeple, he has now %d meeple(s)\n", id, NUMBER_OF_MEEPLES - meeples.size());
+	}
+
 	public void update(Move m) {
 		if (meeples.size() < NUMBER_OF_MEEPLES && m.place != placeId.NO_MEEPLE)
 			meeples.add(m.tile.nodes[m.place.toInt()]);

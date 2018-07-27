@@ -109,16 +109,17 @@ public class setTile {
 		return false;
 	}
 
-	public void update(Move m) {
+	public void update(Move m, Score score) {
 		if (m.place != placeId.NO_MEEPLE) 
 			m.tile.nodes[m.place.toInt()].meepleOwner = m.player;
 		addSetTile(m.tile);
-		//Score.scoreRoad(m.tile);
+		//score.scoreRoad(m.tile);
+		//score.abbeyCurrent(m);
+		//score.cityCurrent(m);
 	}	
 
 	/*
 	public static void main (String[] args) {
-		
 		setTile s = new setTile();	
 		Position pos1 = new Position(0, 0);
 		Position pos2 = s.neighbourPosition(pos1, directionId.NORTH);
@@ -141,5 +142,29 @@ public class setTile {
 		
 		Move m = new Move(0, c, Place.NO_MEEPLE);
 		System.out.println(s.validMove(m));
+
+		setTile s = new setTile();
+		CityOneSide t1 = new CityOneSide();
+		CityOneSide t2 = new CityOneSide();
+		CityOneSide t3 = new CityOneSide();
+		CityThree t4 = new CityThree();
+		t1.pos = new Position(-2, 0);
+		t2.pos = new Position(-1, 1);
+		t3.pos = new Position(-1, -1);
+		t4.pos = new Position(-1, 0);
+		t1.dir = directionId.EAST;
+		t1.rotation(directionId.EAST);
+		t2.dir = directionId.SOUTH;
+		t2.rotation(directionId.SOUTH);
+		t4.dir = directionId.EAST;
+		t4.rotation(directionId.EAST);
+		//s.addSetTile(t1);
+		s.addSetTile(t2);
+		s.addSetTile(t3);
+		s.addSetTile(t4);
+
+		ArrayList<Tile> visitedTiles = new ArrayList<Tile>();
+		Score score = new Score();
+		System.out.println(score.cityComplete(t4, visitedTiles));
 	}*/
 }

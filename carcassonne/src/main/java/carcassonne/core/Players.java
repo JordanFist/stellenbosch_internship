@@ -39,6 +39,14 @@ public class Players {
 		}
 		return players.get(id);
 	}
+
+	public void displayScore() {
+		System.out.println("==============================================\n");
+		for (Player p : players) {
+			System.out.printf("player %d scored %d points\n\n", p.id, p.points);
+		}
+	}
+
 	/*
 	public static void main(String[] args) {
 		Players players = new Players(3);
