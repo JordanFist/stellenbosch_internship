@@ -11,7 +11,7 @@ public class MonasteryRoad extends Tile {
 	private final String CARDS_CONTENT[] = {"PLAIN","PLAIN","PLAIN","PLAIN","PLAIN","PLAIN","PLAIN","ROAD","PLAIN","PLAIN","PLAIN","PLAIN","ABBEY"};
 	public MonasteryRoad () {
 		super(directionId.NORTH, new Position(0, 0));
-		this.name = "MonasteryRoad";
+		this.name = "MONASTERY_ROAD";
 
 		for (int i = 0; i < Tile.NUMBER_OF_DIRECTIONS; ++i) 
 			this.nodes[i] = new Node(CARDS_CONTENT[i], this);

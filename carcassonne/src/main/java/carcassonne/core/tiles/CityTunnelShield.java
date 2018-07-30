@@ -12,7 +12,7 @@ public class CityTunnelShield extends Tile {
 	
 	public CityTunnelShield () {
 		super(directionId.NORTH, new Position(0, 0));
-		this.name = "CityTunnelShield";
+		this.name = "CITY_TUNNEL_SHIELD";
 		this.shield = true;
 		
 		for (int i = 0; i < Tile.NUMBER_OF_DIRECTIONS; ++i) 

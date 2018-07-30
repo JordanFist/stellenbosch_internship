@@ -12,7 +12,7 @@ public class CityThreeRoadShield extends Tile {
 
 	public CityThreeRoadShield () {
 		super(directionId.NORTH, new Position(0, 0));
-		this.name = "CityThreeRoadShield";
+		this.name = "CITY_THREE_ROAD_SHIELD";
 		this.shield = true;
 
 		for (int i = 0; i < Tile.NUMBER_OF_DIRECTIONS; ++i) 

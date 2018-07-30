@@ -12,7 +12,7 @@ public class RoadTurnRightCity extends Tile {
 
 	public RoadTurnRightCity () {
 		super(directionId.NORTH, new Position(0, 0));
-		this.name = "RoadTurnRightCity";
+		this.name = "ROAD_TURN_RIGHT_CITY";
 
 		for (int i = 0; i < Tile.NUMBER_OF_DIRECTIONS; ++i) 
 			this.nodes[i] = new Node(CARDS_CONTENT[i], this);

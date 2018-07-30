@@ -12,7 +12,7 @@ public class PlainCityRoad extends Tile {
 
 	public PlainCityRoad () {
 		super(directionId.NORTH, new Position(0, 0));
-		this.name = "PlainCityRoad";
+		this.name = "PLAN_CITY_ROAD";
 
 		for (int i = 0; i < Tile.NUMBER_OF_DIRECTIONS; ++i) 
 			this.nodes[i] = new Node(CARDS_CONTENT[i], this);

@@ -12,7 +12,7 @@ public class JunctionCity extends Tile {
 
 	public JunctionCity () {
 		super(directionId.NORTH, new Position(0, 0));
-		this.name = "JunctionCity";
+		this.name = "JUNCTION_CITY";
 
 		for (int i = 0; i < Tile.NUMBER_OF_DIRECTIONS; ++i) 
 			this.nodes[i] = new Node(CARDS_CONTENT[i], this);

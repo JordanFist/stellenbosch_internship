@@ -12,7 +12,7 @@ public class JunctionThree extends Tile {
 
 	public JunctionThree () {
 		super(directionId.NORTH, new Position(0, 0));
-		this.name = "JunctionThree";
+		this.name = "JUNCTION_THREE";
 
 		for (int i = 0; i < Tile.NUMBER_OF_DIRECTIONS; ++i) 
 			this.nodes[i] = new Node(CARDS_CONTENT[i], this);

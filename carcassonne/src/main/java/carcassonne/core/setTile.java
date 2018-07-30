@@ -113,9 +113,9 @@ public class setTile {
 		if (m.place != placeId.NO_MEEPLE) 
 			m.tile.nodes[m.place.toInt()].meepleOwner = m.player;
 		addSetTile(m.tile);
-		//score.scoreRoad(m.tile);
 		//score.abbeyCurrent(m);
 		//score.cityCurrent(m);
+		//score.roadCurrent(m);
 	}	
 
 	/*
@@ -144,27 +144,18 @@ public class setTile {
 		System.out.println(s.validMove(m));
 
 		setTile s = new setTile();
-		CityOneSide t1 = new CityOneSide();
-		CityOneSide t2 = new CityOneSide();
-		CityOneSide t3 = new CityOneSide();
-		CityThree t4 = new CityThree();
-		t1.pos = new Position(-2, 0);
-		t2.pos = new Position(-1, 1);
-		t3.pos = new Position(-1, -1);
-		t4.pos = new Position(-1, 0);
-		t1.dir = directionId.EAST;
-		t1.rotation(directionId.EAST);
-		t2.dir = directionId.SOUTH;
-		t2.rotation(directionId.SOUTH);
-		t4.dir = directionId.EAST;
-		t4.rotation(directionId.EAST);
-		//s.addSetTile(t1);
+		Player p = new Player(0);
+		RoadStraightCity t1 = new RoadStraightCity();
+		RoadTurnRightCity t2 = new RoadTurnRightCity();
+		t1.pos = new Position(0, 1);
+		t2.pos = new Position(0, -1);
+		t1.dir = directionId.NORTH;
+		t2.dir = directionId.WEST;
+		t2.rotation(directionId.WEST);
+		s.addSetTile(t1);
 		s.addSetTile(t2);
-		s.addSetTile(t3);
-		s.addSetTile(t4);
 
-		ArrayList<Tile> visitedTiles = new ArrayList<Tile>();
-		Score score = new Score();
-		System.out.println(score.cityComplete(t4, visitedTiles));
+		t1.nodes[0].meepleOwner = p;
+		System.out.println(t2.nodes[1].isMeepleInArea());
 	}*/
 }

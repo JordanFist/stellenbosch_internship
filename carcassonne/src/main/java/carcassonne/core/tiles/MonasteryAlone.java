@@ -12,7 +12,7 @@ public class MonasteryAlone extends Tile {
 
 	public MonasteryAlone () {
 		super(directionId.NORTH, new Position(0, 0));
-		this.name = "MonasteryAlone";
+		this.name = "MONASTERY_ALONE";
 
 		for (int i = 0; i < Tile.NUMBER_OF_DIRECTIONS; ++i) 
 			this.nodes[i] = new Node(CARDS_CONTENT[i], this);

@@ -12,7 +12,7 @@ public class CityTunnel extends Tile {
 
 	public CityTunnel () {
 		super(directionId.NORTH, new Position(0, 0));
-		this.name = "CityTunnel";
+		this.name = "CITY_TUNNEL";
 
 		for (int i = 0; i < Tile.NUMBER_OF_DIRECTIONS; ++i) 
 			this.nodes[i] = new Node(CARDS_CONTENT[i], this);

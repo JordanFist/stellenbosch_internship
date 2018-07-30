@@ -12,7 +12,7 @@ public class PlainCityRoadShield extends Tile {
 
 	public PlainCityRoadShield () {
 		super(directionId.NORTH, new Position(0, 0));
-		this.name = "PlainCityRoadShield";
+		this.name = "PLAIN_CITY_ROAD_SHIELD";
 		this.shield = true;
 
 		for (int i = 0; i < Tile.NUMBER_OF_DIRECTIONS; ++i) 

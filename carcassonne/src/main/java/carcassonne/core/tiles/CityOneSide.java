@@ -12,7 +12,7 @@ public class CityOneSide extends Tile {
 
 	public CityOneSide () {
 		super(directionId.NORTH, new Position(0, 0));
-		this.name = "CityOneSide";
+		this.name = "CITY_ONE_SIDE";
 
 		for (int i = 0; i < Tile.NUMBER_OF_DIRECTIONS; ++i) 
 			this.nodes[i] = new Node(CARDS_CONTENT[i], this);

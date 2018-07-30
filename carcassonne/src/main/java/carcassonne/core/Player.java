@@ -17,6 +17,7 @@ public class Player {
 	}	
 
 	public void giveBackMeeple(Node n) {
+		n.meepleOwner = null;
 		meeples.remove(n);
 		System.out.printf("player %d gets back a meeple, he has now %d meeple(s)\n", id, NUMBER_OF_MEEPLES - meeples.size());
 	}
