@@ -1,7 +1,8 @@
 package carcassonne.core;
 import java.util.ArrayList;
 
-import carcassonne.core.tiles.RoadStraightCity;
+//import carcassonne.core.tiles.RoadStraightCity;
+import carcassonne.core.tiles.*;
 
 public class setTile {
 	public static ArrayList<Tile> tiles = new ArrayList<Tile>();
@@ -113,9 +114,9 @@ public class setTile {
 		if (m.place != placeId.NO_MEEPLE) 
 			m.tile.nodes[m.place.toInt()].meepleOwner = m.player;
 		addSetTile(m.tile);
-		//score.abbeyCurrent(m);
-		//score.cityCurrent(m);
-		//score.roadCurrent(m);
+		score.abbeyCurrent(m);
+		score.roadCurrent(m);
+		score.cityCurrent(m);
 	}	
 
 	/*
@@ -142,20 +143,5 @@ public class setTile {
 		
 		Move m = new Move(0, c, Place.NO_MEEPLE);
 		System.out.println(s.validMove(m));
-
-		setTile s = new setTile();
-		Player p = new Player(0);
-		RoadStraightCity t1 = new RoadStraightCity();
-		RoadTurnRightCity t2 = new RoadTurnRightCity();
-		t1.pos = new Position(0, 1);
-		t2.pos = new Position(0, -1);
-		t1.dir = directionId.NORTH;
-		t2.dir = directionId.WEST;
-		t2.rotation(directionId.WEST);
-		s.addSetTile(t1);
-		s.addSetTile(t2);
-
-		t1.nodes[0].meepleOwner = p;
-		System.out.println(t2.nodes[1].isMeepleInArea());
 	}*/
 }

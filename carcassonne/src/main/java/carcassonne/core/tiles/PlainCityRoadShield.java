@@ -18,6 +18,9 @@ public class PlainCityRoadShield extends Tile {
 		for (int i = 0; i < Tile.NUMBER_OF_DIRECTIONS; ++i) 
 			this.nodes[i] = new Node(CARDS_CONTENT[i], this);
 
+		this.nodes[8].plainNextToCity = false;
+		this.nodes[9].plainNextToCity = false;
+
 		this.nodes[0].connection(this.nodes[1]);
 		this.nodes[1].connection(this.nodes[2]);
 		this.nodes[2].connection(this.nodes[3]);

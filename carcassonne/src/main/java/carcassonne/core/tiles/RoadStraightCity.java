@@ -17,6 +17,12 @@ public class RoadStraightCity extends Tile {
 		for (int i = 0; i < Tile.NUMBER_OF_DIRECTIONS; ++i) 
 			this.nodes[i] = new Node(CARDS_CONTENT[i], this);
 
+		this.nodes[2].plainNextToCity = false;	
+		this.nodes[3].plainNextToCity = false;
+		this.nodes[4].plainNextToCity = false;
+		this.nodes[5].plainNextToCity = false;
+		this.nodes[6].plainNextToCity = false;
+
 		this.nodes[2].connection(this.nodes[3]);
 		this.nodes[3].connection(this.nodes[4]);
 		this.nodes[4].connection(this.nodes[5]);

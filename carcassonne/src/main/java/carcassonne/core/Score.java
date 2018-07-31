@@ -17,10 +17,10 @@ class playerMeeple {
 public class Score {
 	public static final int MAX_ABBEY_NEIGHBOUR = 8;
 
-	ArrayList<Tile> monasteries = new ArrayList<Tile>();
-	ArrayList<ArrayList> completeCities = new ArrayList<ArrayList>();
+	public ArrayList<Tile> monasteries = new ArrayList<Tile>();
+	public ArrayList<ArrayList> completeCities = new ArrayList<ArrayList>();
 
-	// Retrun true if the type is in the card
+	// Return true if the type is in the card
 	public boolean typeOnCard(Tile t, String type) {
 		for (Node n : t.nodes) {
 			if (n.landType.equals(type) == true)
@@ -138,7 +138,11 @@ public class Score {
 						visitedTiles = new ArrayList<Tile>();		
 					}
 				}
-			} else if (completeRoad(findLandType(t, "ROAD"), playersOnRoad, visitedTiles) == true) {
+			} else if (isCycle(findLandType(t, "ROAD"), playersOnRoad, visitedTiles) == true) {
+				completeRoad(findLandType(t, "ROAD"), playersOnRoad, visitedTiles);
+				givePointsRoad(playersOnRoad, visitedTiles);
+				giveBackMeeple(playersOnRoad);
+			}else if (completeRoad(findLandType(t, "ROAD"), playersOnRoad, visitedTiles) == true) {
 				givePointsRoad(playersOnRoad, visitedTiles);
 				giveBackMeeple(playersOnRoad);	
 			}
@@ -163,6 +167,35 @@ public class Score {
 			givePointsRoad(playersOnRoad, visitedTiles);
 			giveBackMeeple(playersOnRoad);	
 		}
+	}
+
+	public boolean isCycle (Node n, ArrayList<playerMeeple> playersOnRoad, ArrayList<Tile> visitedTiles) {
+		Node check = n;
+		Stack<Node> stack = new Stack<Node>();
+		Stack<Node> visited = new Stack<Node>();
+		stack.add(check);
+		while (stack.isEmpty() == false) {
+			check = stack.remove(0);
+			if (visited.contains(check) == true) 
+				return true;
+			else
+				visited.add(check);
+
+			if (check.meepleOwner != null) {
+				if (playerContains(playersOnRoad, check.meepleOwner) == false)
+					playersOnRoad.add(new playerMeeple(check.meepleOwner, check));
+			}
+
+			if (visitedTiles.contains(check.sourceTile) == false)
+				visitedTiles.add(check.sourceTile);
+
+			for (int i = 0; i < check.neighbourNodes.size(); ++i) {
+				if (check.neighbourNodes.get(i) != null && visited.contains(check.neighbourNodes.get(i)) == false) {
+					stack.add(check.neighbourNodes.get(i));
+				}
+			}
+		}
+		return false;
 	}
 
 
@@ -206,8 +239,10 @@ public class Score {
 		}	
 	}
 	
-	public void abbeyEnd(Tile t, Player player) {
-		player.points += (monasteryNeighbour(t) + 1);
+	public void abbeyEnd(Node n, Player player) {
+		player.points += (monasteryNeighbour(n.sourceTile) + 1);
+		monasteries.remove(n.sourceTile);
+		player.giveBackMeeple(n);
 	}
 
 	/* End ABBEY score */
@@ -216,9 +251,45 @@ public class Score {
 	
 	/* Beginning PLAIN score */
 
+	public int isCompleteCity(Tile t) {
+		for (int i = 0; i < completeCities.size(); ++i) {
+			if (completeCities.get(i).contains(t) == true)
+				return i;
+		}
+		return -1;
+	}
+
 	public int findCompleteCities(Node n, ArrayList<playerMeeple> playersInPlain) {
-		//TODO
-		return 0;
+		int res = 0;
+		Node check = n;
+		Stack<Node> stack = new Stack<Node>();
+		Stack<Node> visited = new Stack<Node>();
+		stack.add(check);
+		visited.add(check);
+		while (stack.isEmpty() == false) {
+			check = stack.remove(0);
+
+			if (check.meepleOwner != null) {
+				if (playerContains(playersInPlain, check.meepleOwner) == false)
+					playersInPlain.add(new playerMeeple(check.meepleOwner, check));
+			}
+			
+			if (typeOnCard(check.sourceTile, "CITY") == true && check.plainNextToCity == true) {  //TO IMPROVE
+				int tmp = isCompleteCity(check.sourceTile);
+				if (tmp != -1) {
+					completeCities.remove(tmp);
+					++res;
+				}
+			}
+
+			for (int i = 0; i < check.neighbourNodes.size(); ++i) {
+				if (check.neighbourNodes.get(i) != null && visited.contains(check.neighbourNodes.get(i)) == false) {
+					stack.add(check.neighbourNodes.get(i));
+					visited.add(check.neighbourNodes.get(i));
+				}
+			}
+		}
+		return res;
 	}
 
 	public void givePointsPlain(ArrayList<playerMeeple> playersInPlain, int numberOfCompleteCities) {
@@ -229,6 +300,7 @@ public class Score {
 	}
 
 	public void plainEnd(Node n, Player p) {
+		p.giveBackMeeple(n);
 		ArrayList<playerMeeple> playersInPlain = new ArrayList<playerMeeple>();
 		int numberOfCompleteCities = findCompleteCities(n, playersInPlain);
 		givePointsPlain(playersInPlain, numberOfCompleteCities);
@@ -260,7 +332,7 @@ public class Score {
 
 			for (directionId dir : directionId.values()) {
 				if (check.getFace(dir).equals("CITY") && visited.contains(check.neighbour(dir)) == false) {
-					if (check.name != "PlainTwoCities" && check.name != "PlainTunnel") {
+					if (check.name.equals("PlainTwoCities") == false && check.name.equals("PlainTunnel") == false) {
 						if (check.neighbour(dir) == null)
 							return false;
 						stack.add(check.neighbour(dir));
@@ -299,12 +371,12 @@ public class Score {
 		}
 	}
 
-	public void givePointsCity(ArrayList<playerMeeple> playerMeeple, ArrayList<Tile> Tiles) {
+	public void givePointsCity(ArrayList<playerMeeple> playerMeeple, ArrayList<Tile> visitedTiles) {
 		sort(playerMeeple);
-		int score = numberOfCardsWithShield(Tiles);
+		int score = numberOfCardsWithShield(visitedTiles);
 		for (playerMeeple pm : playerMeeple) {
 			pm.player.points += 2 * score;
-			if (Tiles.size() == 2)
+			if (visitedTiles.size() == 2)
 				pm.player.points -= 2;
 		}
 	}
@@ -316,26 +388,47 @@ public class Score {
 			ArrayList<Tile> visitedTiles = new ArrayList<Tile>();
 			if (t.name.equals("PlainTwoCities") != true && t.name.equals("PlainTunnel") != true) {
 				if (cityComplete(t) == true) {
-					completeCities.add(visitedTiles);
 					collectPlayer(findLandType(t, "CITY"), playersInCity, visitedTiles);
+					completeCities.add(visitedTiles);
 					givePointsCity(playersInCity, visitedTiles);
 					giveBackMeeple(playersInCity);
 				}
 			} else {
 				ArrayList<Tile> neighbourCityTiles = new ArrayList<Tile>();
-				//neighbourCity(t, neighbourCityTiles);
+				neighbourCity(t, neighbourCityTiles);
 				for (Tile neighbour : neighbourCityTiles) {
-					if (neighbour.name.equals("PlainTwoCities") == true || neighbour.name.equals("PlainTunnel") == true)
-						;//TODO
-					else if (cityComplete(neighbour) == true) {
-						//completeCities.add(visitedTiles);
-						//collectPlayer(findLandType(t, "CITY"), playersInCity, visitedTiles);
-						//givePointsCity(playersInCity, visitedTiles);
-						//giveBackMeeple(playersInCity);
+					playersInCity = new ArrayList<playerMeeple>();
+					visitedTiles = new ArrayList<Tile>();
+					if (neighbour.name.equals("PlainTwoCities") == true || neighbour.name.equals("PlainTunnel") == true) {
+						collectPlayer(findLandType(t, "CITY"), playersInCity, visitedTiles);
+						completeCities.add(visitedTiles);
+						givePointsCity(playersInCity, visitedTiles);
+						giveBackMeeple(playersInCity);
+					} else if (cityComplete(neighbour) == true) {
+						collectPlayer(findLandType(t, "CITY"), playersInCity, visitedTiles);
+						completeCities.add(visitedTiles);
+						givePointsCity(playersInCity, visitedTiles);
+						giveBackMeeple(playersInCity);
 					}
 				}			
 			}
 		}	
+	}
+
+	public void givePointsCityEnd(ArrayList<playerMeeple> playerMeeple, ArrayList<Tile> visitedTiles) {
+		sort(playerMeeple);
+		int score = numberOfCardsWithShield(visitedTiles);
+		for (playerMeeple pm : playerMeeple) {
+			pm.player.points += score;
+		}
+	}
+
+	public void cityEnd(Node n) {
+		ArrayList<playerMeeple> playersInCity = new ArrayList<playerMeeple>();
+		ArrayList<Tile> visitedTiles = new ArrayList<Tile>();
+		collectPlayer(n, playersInCity, visitedTiles);
+		givePointsCityEnd(playersInCity, visitedTiles);
+		giveBackMeeple(playersInCity);
 	}
 
 	/* End CITY score */
@@ -345,14 +438,22 @@ public class Score {
 		for (Player p : players.players) {
 			for (int i = 0; i < p.meeples.size(); ++i) {
 				n = p.meeples.get(i);
-				if (n.landType.equals("ABBEY") == true) 
-					;//abbeyEnd(n.sourceTile, p);
-				if (n.landType.equals("ROAD") == true) 
-					;//roadEnd(n.sourceTile);	
-				if (n.landType.equals("PLAIN") == true)
-					;//plainEnd(n, p);				
-				if (n.landType.equals("CITY") == true)
-					;//cityEnd();				
+				if (n.landType.equals("ABBEY") == true) {
+					abbeyEnd(n, p);
+					--i;	// when a node is removed of meeples array, the array is shifted on the left, thus --i
+				}
+				if (n.landType.equals("ROAD") == true) {
+					roadEnd(n.sourceTile);	
+					--i;
+				}
+				if (n.landType.equals("PLAIN") == true) {
+					plainEnd(n, p);		
+					--i;				
+				}		
+				if (n.landType.equals("CITY") == true) {
+					cityEnd(n);		
+					--i;
+				}		
 			}		
 		}
 	}

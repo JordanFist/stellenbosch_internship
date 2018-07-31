@@ -21,6 +21,11 @@ public class JunctionCity extends Tile {
 		this.nodes[4].endRoad = true;
 		this.nodes[7].endRoad = true;
 
+		this.nodes[2].plainNextToCity = false;
+		this.nodes[3].plainNextToCity = false;
+		this.nodes[5].plainNextToCity = false;
+		this.nodes[6].plainNextToCity = false;
+
 		this.nodes[2].connection(this.nodes[3]);
 		this.nodes[5].connection(this.nodes[6]);
 		this.nodes[9].connection(this.nodes[10]);

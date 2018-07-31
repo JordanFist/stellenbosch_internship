@@ -10,6 +10,7 @@ public class Node {
 	public String landType;
 	public Player meepleOwner;
 	public boolean endRoad = false;
+	public boolean plainNextToCity = true;
 	public Tile sourceTile;
 	public ArrayList<Node> neighbourNodes = new ArrayList<Node>();
 

@@ -24,6 +24,7 @@ public class RoadStraight extends Tile {
 		this.nodes[8].connection(this.nodes[9]);
 		this.nodes[9].connection(this.nodes[10]);
 		this.nodes[10].connection(this.nodes[11]);
+		this.nodes[11].connection(this.nodes[0]);
 		this.nodes[1].connection(this.nodes[12]);
 		this.nodes[12].connection(this.nodes[7]);
 	}

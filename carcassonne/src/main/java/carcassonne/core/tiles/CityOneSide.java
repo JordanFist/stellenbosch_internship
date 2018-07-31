@@ -19,7 +19,7 @@ public class CityOneSide extends Tile {
 
 		this.nodes[0].connection(this.nodes[1]);
 		this.nodes[1].connection(this.nodes[2]);
-		this.nodes[2].connection(this.nodes[3]);
+		this.nodes[3].connection(this.nodes[4]);
 		this.nodes[4].connection(this.nodes[5]);
 		this.nodes[5].connection(this.nodes[6]);
 		this.nodes[6].connection(this.nodes[7]);
