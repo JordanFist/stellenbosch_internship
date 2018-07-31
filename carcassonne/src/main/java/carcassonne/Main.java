@@ -45,8 +45,15 @@ public class Main {
 				System.out.printf("%s is unplayable\n", tile.name);
 		}
 		
-		//score.end(players);
+		score.end(players);
 		players.displayScore();
+	
+		
+
+		for (Player p : players.players) {
+				System.out.println(p.meeples.size());
+		}
+		
 
 		/* End of the game loop */
 	}
