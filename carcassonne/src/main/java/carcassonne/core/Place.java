@@ -1,20 +1,20 @@
 package carcassonne.core;
 
 enum Place {
-	NORTH_EAST(0),  //0.  {NE}
-	NORTH(1),       //1.  {N}
-	NORTH_WEST(2),  //2.  {NW}
-	WEST_NORTH(3),  //3.  {WN}
-	WEST(4),        //4.  {W}
-	WEST_SOUTH(5),  //5.  {WS}
-	SOUTH_WEST(6),  //6.  {SW}
-	SOUTH(7),       //7.  {S}
-	SOUTH_EAST(8),  //8.  {SE}
- 	EAST_SOUTH(9),  //9.  {ES}
- 	EAST(10),       //10. {E}
- 	EAST_NORTH(11), //11. {EN}  
- 	CENTER(12),     //12. {C}
-	NO_MEEPLE(13); 	    //13. special place for not placing a meeple
+	NORTH_EAST(0),  // {NE}
+	NORTH(1),       // {N}
+	NORTH_WEST(2),  // {NW}
+	WEST_NORTH(3),  // {WN}
+	WEST(4),        // {W}
+	WEST_SOUTH(5),  // {WS}
+	SOUTH_WEST(6),  // {SW}
+	SOUTH(7),       // {S}
+	SOUTH_EAST(8),  // {SE}
+ 	EAST_SOUTH(9),  // {ES}
+ 	EAST(10),       // {E}
+ 	EAST_NORTH(11), // {EN}  
+ 	CENTER(12),     // {C}
+	NO_MEEPLE(13); 	// special place for not placing a meeple
 	
 	public final int id;
 
