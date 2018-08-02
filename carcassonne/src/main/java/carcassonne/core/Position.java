@@ -9,15 +9,18 @@ public class Position {
 		this.y = y;
 	} 
 	
-	public Position neighbourPosition(directionId dir) {
+	/**
+	* Return the neighbour coordinate in according to dir
+	**/
+	public Position neighbourPosition(Direction dir) {
 		Position pos = new Position(this.x, this.y);
-		if (dir == directionId.NORTH) 
+		if (dir == Direction.NORTH) 
    			++pos.y;
-  		if (dir == directionId.WEST) 
+  		if (dir == Direction.WEST) 
    			--pos.x;
-  		if (dir == directionId.SOUTH) 
+  		if (dir == Direction.SOUTH) 
    			--pos.y;
-  		if (dir == directionId.EAST) 
+  		if (dir == Direction.EAST) 
   		 	++pos.x;
  		return pos;
 	}

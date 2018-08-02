@@ -1,7 +1,7 @@
 package carcassonne.core;
+
 import java.util.Stack;
 import java.util.Collections;
-
 import carcassonne.core.tiles.*;
 
 public class Deck {
@@ -12,11 +12,18 @@ public class Deck {
 		fill();
 		shuffle();
 	}
+
+	/**
+	* Return true if the deck is empty
+	**/
 	
 	public boolean isEmpty() {
 		return pile.isEmpty();
 	}
 
+	/**
+	* Return the first card on the deck
+	**/
 	public Tile drawCard() {
 		if (pile.isEmpty() == false) {
 			return pile.remove(0);
@@ -24,10 +31,16 @@ public class Deck {
 		return null;
 	}
 	
+	/**
+	* Shuffle the deck
+	**/
 	public void shuffle() {
 		Collections.shuffle(pile);
 	}
 	
+	/**
+	* Fill the deck with all the cards of the game
+	**/
 	public void fill() {
 		int j = 0;
 		for (int i = 0; i < 1; ++i) {
@@ -66,15 +79,4 @@ public class Deck {
 		for (int i = 0; i < 9; ++i) 
 			pile.add(new RoadTurn());
 	}
-	/*
-	public static void main(String[] args) {
-		Deck deck = new Deck();
-		for (int i = 0; i < NUMBER_OF_CARDS; ++i) {
-			Tile t = deck.drawCard();
-			System.out.print(i + "  ");
-			System.out.println(t.name);
-			System.out.println(deck.isEmpty());
-		}
-		System.out.println(deck.drawCard());
-	}*/
 }

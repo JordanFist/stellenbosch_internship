@@ -1,50 +1,65 @@
 package carcassonne.core;
 
 public class Tile {
-	public static final int NUMBER_OF_DIRECTIONS = 13;
-	public static final int SIDES = 4;
-	
 	public String name;
 	public boolean shield = false;
-	public directionId dir = directionId.NORTH;
+	public Direction dir = Direction.NORTH;
 	public Position pos = new Position(0, 0);
-	public Tile neighbourTiles[] = new Tile[SIDES];
-	public Node nodes[] = new Node[NUMBER_OF_DIRECTIONS];
+	public Tile neighbourTiles[] = new Tile[Direction.SIDES];
+	public Node nodes[] = new Node[Direction.NUMBER_OF_DIRECTIONS];
 
-	public Tile(directionId dir, Position Pos) {
+	public Tile(Direction dir, Position Pos) {
 		this.dir = dir;
 		this.pos = pos;
 		rotation(dir);
 	}
 	
+	/**
+	* Return true if the tile is empty(=null)
+	**/
 	public boolean isEmptyTile(Tile t) {
 		return (t == null);
 	}
 
-	public Tile neighbour(directionId dir) {
-		return (neighbourTiles[dir.toInt()]);
+	/**
+	* Return the neighbour tile according to dir using neighbourTiles array
+	**/
+	public Tile neighbour(Direction dir) {
+		return (neighbourTiles[dir.get()]);
 	}
 	
-	public void rotation(directionId dir) {
+	/**
+	* Make a rotation of the card namely nodes array
+	**/
+	public void rotation(Direction dir) {
 		Node swap;
-		for (int i = 0; i < 3 * dir.toInt(); ++i) {
-			swap = nodes[NUMBER_OF_DIRECTIONS - 2];
-			for (int j = NUMBER_OF_DIRECTIONS - 2; j > 0; --j)
+		for (int i = 0; i < 3 * dir.get(); ++i) {
+			swap = nodes[dir.NUMBER_OF_DIRECTIONS - 2];
+			for (int j = dir.NUMBER_OF_DIRECTIONS - 2; j > 0; --j)
 				nodes[j] = nodes[j - 1];
 			nodes[0] = swap; 	
 		}
 	}
-
-	public String getFace(directionId dir) {
-		return nodes[Direction.getDirection(dir)].landType;
+	
+	/**
+	* Return the type of the central face (PLAIN, ROAD, ...) according to dir
+	**/
+	public String getFace(Direction dir) {
+		return nodes[dir.getExtend()].landType;
 	}
 
-	public String getOppositeFace(directionId dir) {
-		return nodes[Direction.getOppositeDirection(dir)].landType;
+	/**
+	* Return the type of the opposite central face according to dir
+	**/
+	public String getOppositeFace(Direction dir) {
+		return nodes[dir.getExtendOpposite()].landType;
 	}
 	
-	// dir : position of t compared to this
-	public boolean matchSide(Tile t, directionId dir) {
+	/**
+	* Return true if 2 tiles can be nearby according to dir
+	* dir = position of t according to this
+	**/
+	public boolean matchSide(Tile t, Direction dir) {
 		if (t == null)
 			return true;
 		String face1 = getFace(dir);
@@ -52,68 +67,38 @@ public class Tile {
 		return (face1.equals(face2));
 	}
 
-	public void connection(Tile t, directionId dir) {
+	/**
+	* Connect 2 tiles according to dir
+	**/
+	public void connection(Tile t, Direction dir) {
 		if (t != null) {
-			neighbourTiles[dir.toInt()] = t;
-			t.neighbourTiles[(dir.toInt() + 2) % SIDES] = this;
+			neighbourTiles[dir.get()] = t;
+			t.neighbourTiles[dir.getOpposite()] = this;
 		}
 	}
 
-	public void disconnection(Tile t, directionId dir) {
+	/**
+	* Disconnect 2 tiles
+	**/
+	public void disconnection(Tile t, Direction dir) {
 		if (t != null) {
-			neighbourTiles[dir.toInt()] = null;
-			t.neighbourTiles[(dir.toInt() + 2) % SIDES] = null;
+			neighbourTiles[dir.get()] = null;
+			t.neighbourTiles[dir.getOpposite()] = null;
 		}
 	}
 
+	/**
+	* Reinit a tile namely as defined in tiles directory
+	**/
 	public void reInit() {
-		if (dir == directionId.WEST)
-			rotation(directionId.EAST);
-		if (dir == directionId.SOUTH)
-			rotation(directionId.SOUTH);
-		if (dir == directionId.EAST)
-			rotation(directionId.WEST);	
-		dir = directionId.NORTH;
+		if (dir == Direction.WEST)
+			rotation(Direction.EAST);
+		if (dir == Direction.SOUTH)
+			rotation(Direction.SOUTH);
+		if (dir == Direction.EAST)
+			rotation(Direction.WEST);	
+		dir = Direction.NORTH;
 		pos.x = 0; pos.y = 0;
 	}
-	/*
-	public static void main(String[] args) {
-		
-		MonasteryRoad t1 = new MonasteryRoad();
-		MonasteryRoad t2 = new MonasteryRoad();
-		t2.pos = new Position(-1, 0);
-
-		directionId dir = directionId.WEST;
-		t2.rotation(dir);
-
-		System.out.println(t1.matchSide(t2, dir));
-		
-		for (int i = 0 ; i < 13; ++i) {
-			System.out.println(t1.nodes[i].landType);
-			//System.out.println(tile.neighbourTiles[i]);
-		}
-
-		System.out.println();
-
-		for (int i = 0 ; i < 13; ++i) {
-			System.out.println(t2.nodes[i].landType);
-		}
-
-		System.out.println();
-		t1.connection(t2, dir);
-
-		for (int i = 0; i < 4; ++i) {
-			System.out.println(t1.neighbourTiles[i]);
-			System.out.println(t2.neighbourTiles[i]);
-		}
-		
-		t1.disconnection(t2, dir);
-		System.out.println();
-		
-		for (int i = 0; i < 4; ++i) {
-			System.out.println(t1.neighbourTiles[i]);
-			System.out.println(t2.neighbourTiles[i]);
-		}
-	}*/
 }
 

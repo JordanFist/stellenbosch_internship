@@ -20,7 +20,9 @@ public class Score {
 	public ArrayList<Tile> monasteries = new ArrayList<Tile>();
 	public ArrayList<ArrayList> completeCities = new ArrayList<ArrayList>();
 
-	// Return true if the type is in the card
+	/** 
+	* Return true if the type is in the card
+	**/
 	public boolean typeOnCard(Tile t, String type) {
 		for (Node n : t.nodes) {
 			if (n.landType.equals(type) == true)
@@ -29,8 +31,10 @@ public class Score {
 		return false;
 	}
 	
-	// Return the first node found in the tile with landType = s
-	public static Node findLandType(Tile t, String s) {
+	/**
+	* Return the first node found in the tile with landType == s
+	**/
+	public Node findLandType(Tile t, String s) {
 		for (Node n : t.nodes) {
 			if (n.landType.equals(s) == true)
 				return n;
@@ -38,8 +42,11 @@ public class Score {
 		return null;
 	}
 	
-	// Return an array in which only these players can receive points
-	public static void sort(ArrayList<playerMeeple> playerMeeple) {
+	/**
+	* Return an array in which only these players can receive points the others get back their
+	* meeples
+	**/	
+	public void sort(ArrayList<playerMeeple> playerMeeple) {
 		if (playerMeeple.size() > 0) {
 			playerMeeple max = playerMeeple.get(0);
 			for (playerMeeple pm : playerMeeple) {
@@ -55,7 +62,9 @@ public class Score {
 		}
 	}
 
-	// Return true if the player is in playerMeeple and add +1 if it is the case
+	/**
+	* Return true if the player is in playerMeeple array and add +1 if it is the case	
+	**/	
 	public boolean playerContains(ArrayList<playerMeeple> playerMeeple, Player p) {
 		for (playerMeeple pm : playerMeeple) {
 			if (pm.player == p) {
@@ -66,7 +75,9 @@ public class Score {
 		return false;
 	}
 
-	// Return the number of cards (if a card is shield it counts twice)
+	/**
+	* Return the number of cards (if a card is shield it counts twice)
+	**/	
 	public int numberOfCardsWithShield(ArrayList<Tile> Tiles) {
 		int res = Tiles.size();
 		for (Tile t : Tiles) {
@@ -76,7 +87,9 @@ public class Score {
 		return res;
 	}
 
-	// Give back Meeples for players
+	/**
+	* Give back Meeples for players in playerMeeple array
+	**/
 	public void giveBackMeeple(ArrayList<playerMeeple> playerMeeple) {
 		for (playerMeeple pm : playerMeeple) 
 			pm.player.giveBackMeeple(pm.node);
@@ -84,6 +97,10 @@ public class Score {
 
 	/* Beginning ROAD score */
 
+	/**
+	* Return true if the road is completed - gets back players on the road - gets back the number 
+	* of road tiles 
+	**/
 	public boolean completeRoad(Node n, ArrayList<playerMeeple> playersOnRoad, ArrayList<Tile> visitedTiles) {
 		int numberOfEndRoads = 0;
 		Node check = n;
@@ -117,6 +134,9 @@ public class Score {
 		return false;
 	}
 
+	/**
+	* Give the points to the players on the road
+	**/
 	public void givePointsRoad(ArrayList<playerMeeple> playersOnRoad, ArrayList<Tile> visitedTiles) {
 		sort(playersOnRoad);
 		int score = visitedTiles.size();
@@ -124,14 +144,17 @@ public class Score {
 			pm.player.points += score;
 	}
 	
+	/**
+	* Main function - check if a road is completed and give the points
+	**/
 	public void roadCurrent(Move m) {	
 		ArrayList<playerMeeple> playersOnRoad = new ArrayList<playerMeeple>();
 		ArrayList<Tile> visitedTiles = new ArrayList<Tile>();
 		Tile t = m.tile;
 		if (typeOnCard(t, "ROAD") == true) {
 			if (t.name.equals("JUNCTION_CITY") == true || t.name.equals("JUNCTION_THREE") == true || t.name.equals("JUNCTION_FOUR") == true) {
-				for (directionId dir : directionId.values()) {
-					if (t.getFace(dir).equals("ROAD") == true && completeRoad(t.nodes[Direction.getDirection(dir)], playersOnRoad, visitedTiles) == true) {
+				for (Direction dir : Direction.values()) {
+					if (t.getFace(dir).equals("ROAD") == true && completeRoad(t.nodes[dir.getExtend()], playersOnRoad, visitedTiles) == true) {
 						givePointsRoad(playersOnRoad, visitedTiles);
 						giveBackMeeple(playersOnRoad);	
 						playersOnRoad = new ArrayList<playerMeeple>();	
@@ -148,14 +171,16 @@ public class Score {
 			}
 		}
 	}
-
+	/**
+	* Give the points for incompleted road at the end
+	**/
 	public void roadEnd(Tile t) {
 		ArrayList<playerMeeple> playersOnRoad = new ArrayList<playerMeeple>();
 		ArrayList<Tile> visitedTiles = new ArrayList<Tile>();
 		if (t.name.equals("JUNCTION_CITY") == true || t.name.equals("JUNCTION_THREE") == true || t.name.equals("JUNCTION_FOUR") == true) {
-			for (directionId dir : directionId.values()) {
+			for (Direction dir : Direction.values()) {
 				if (t.getFace(dir).equals("ROAD") == true) {
-					completeRoad(t.nodes[Direction.getDirection(dir)], playersOnRoad, visitedTiles);
+					completeRoad(t.nodes[dir.getExtend()], playersOnRoad, visitedTiles);
 					givePointsRoad(playersOnRoad, visitedTiles);
 					giveBackMeeple(playersOnRoad);	
 					playersOnRoad = new ArrayList<playerMeeple>();	
@@ -169,6 +194,9 @@ public class Score {
 		}
 	}
 
+	/**
+	* Return true if the road is a cycle
+	**/
 	public boolean isCycle (Node n, ArrayList<playerMeeple> playersOnRoad, ArrayList<Tile> visitedTiles) {
 		Node check = n;
 		Stack<Node> stack = new Stack<Node>();
@@ -206,39 +234,48 @@ public class Score {
 
 	/* Beginning ABBEY score */
 	
+	/**
+	* Return the number of cards around the monastery
+	**/
 	public int monasteryNeighbour(Tile t) {
 		int res = 0;
-		for (directionId dir : directionId.values()) 
+		for (Direction dir : Direction.values()) 
 			if (t.neighbour(dir) != null)
 				++res;
-		if (t.neighbour(directionId.NORTH) != null && t.neighbour(directionId.NORTH).neighbour(directionId.WEST) != null)
+		if (t.neighbour(Direction.NORTH) != null && t.neighbour(Direction.NORTH).neighbour(Direction.WEST) != null)
 			++res;
-		if (t.neighbour(directionId.WEST) != null && t.neighbour(directionId.WEST).neighbour(directionId.SOUTH) != null)
+		if (t.neighbour(Direction.WEST) != null && t.neighbour(Direction.WEST).neighbour(Direction.SOUTH) != null)
 			++res;
-		if (t.neighbour(directionId.SOUTH) != null && t.neighbour(directionId.SOUTH).neighbour(directionId.EAST) != null)
+		if (t.neighbour(Direction.SOUTH) != null && t.neighbour(Direction.SOUTH).neighbour(Direction.EAST) != null)
 			++res;
-		if (t.neighbour(directionId.EAST) != null && t.neighbour(directionId.EAST).neighbour(directionId.NORTH) != null)
+		if (t.neighbour(Direction.EAST) != null && t.neighbour(Direction.EAST).neighbour(Direction.NORTH) != null)
 			++res;
 		return res;
 	}
 
+	/**
+	* Main function - check is a monastery is completed and give the points
+	**/
 	public void abbeyCurrent(Move m) {
 		int count;
 		Player player;
-		if (m.tile.nodes[placeId.POS_CENTER.toInt()].landType.equals("ABBEY") && m.place == placeId.POS_CENTER)
+		if (m.tile.nodes[Place.CENTER.get()].landType.equals("ABBEY") && m.place == Place.CENTER)
 			monasteries.add(m.tile);
 		for (int i = 0; i < monasteries.size(); ++i) {
 			Tile t = monasteries.get(i);
-			player = t.nodes[placeId.POS_CENTER.toInt()].meepleOwner;
+			player = t.nodes[Place.CENTER.get()].meepleOwner;
 			count = monasteryNeighbour(t);
 			if (count == MAX_ABBEY_NEIGHBOUR) {
 				player.points += (count + 1);
-				player.giveBackMeeple(t.nodes[placeId.POS_CENTER.toInt()]);
+				player.giveBackMeeple(t.nodes[Place.CENTER.get()]);
 				monasteries.remove(t);
 			}
 		}	
 	}
 	
+	/**
+	* Give the points for incompleted monastery at the end
+	**/
 	public void abbeyEnd(Node n, Player player) {
 		player.points += (monasteryNeighbour(n.sourceTile) + 1);
 		monasteries.remove(n.sourceTile);
@@ -251,6 +288,10 @@ public class Score {
 	
 	/* Beginning PLAIN score */
 
+	/**
+	* if t is a tile owned to a completed city it returns all the tiles of the completed city in
+	* an array
+	**/
 	public int isCompleteCity(Tile t) {
 		for (int i = 0; i < completeCities.size(); ++i) {
 			if (completeCities.get(i).contains(t) == true)
@@ -259,6 +300,9 @@ public class Score {
 		return -1;
 	}
 
+	/**
+	* Return the number of complete cities in the plain	
+	**/
 	public int findCompleteCities(Node n, ArrayList<playerMeeple> playersInPlain) {
 		int res = 0;
 		Node check = n;
@@ -292,6 +336,9 @@ public class Score {
 		return res;
 	}
 
+	/**
+	* Give the points to the players on the plain
+	**/
 	public void givePointsPlain(ArrayList<playerMeeple> playersInPlain, int numberOfCompleteCities) {
 		sort(playersInPlain);
 		for (playerMeeple pm : playersInPlain) {
@@ -299,6 +346,9 @@ public class Score {
 		}
 	}
 
+	/**
+	* Main function - Give the points for plain at the end
+	**/
 	public void plainEnd(Node n, Player p) {
 		p.giveBackMeeple(n);
 		ArrayList<playerMeeple> playersInPlain = new ArrayList<playerMeeple>();
@@ -313,14 +363,20 @@ public class Score {
 
 	/* Beginning CITY score */
 
+	/**
+	* Fill an array in which there are all the city card around
+	**/
 	public void neighbourCity (Tile t, ArrayList<Tile> neighbourCityTiles) {
-		for (directionId dir : directionId.values()) {
+		for (Direction dir : Direction.values()) {
 			if (t.getFace(dir).equals("CITY") == true && t.neighbour(dir) != null) {
 				neighbourCityTiles.add(t.neighbour(dir));
 			}
 		}
 	}
 
+	/**
+	* Return true if a city is completed
+	**/
 	public boolean cityComplete(Tile t) {
 		Tile check;
 		Stack<Tile> stack = new Stack<Tile>();
@@ -330,7 +386,7 @@ public class Score {
 		while (stack.isEmpty() == false) {
 			check = stack.remove(0);
 
-			for (directionId dir : directionId.values()) {
+			for (Direction dir : Direction.values()) {
 				if (check.getFace(dir).equals("CITY") && visited.contains(check.neighbour(dir)) == false) {
 					if (check.name.equals("PlainTwoCities") == false && check.name.equals("PlainTunnel") == false) {
 						if (check.neighbour(dir) == null)
@@ -344,6 +400,9 @@ public class Score {
 		return true;
 	}
 
+	/**
+	* Get back the players in the city
+	**/
 	public void collectPlayer(Node n, ArrayList<playerMeeple> playersInCity, ArrayList<Tile> visitedTiles) {
 		Node check = n;
 		Stack<Node> stack = new Stack<Node>();
@@ -371,6 +430,9 @@ public class Score {
 		}
 	}
 
+	/**
+	* Give the points to players in the city in the current game
+	**/
 	public void givePointsCity(ArrayList<playerMeeple> playerMeeple, ArrayList<Tile> visitedTiles) {
 		sort(playerMeeple);
 		int score = numberOfCardsWithShield(visitedTiles);
@@ -381,6 +443,9 @@ public class Score {
 		}
 	}
 
+	/**
+	* Main function - Check if a city is completed - give the points for city
+	**/
 	public void cityCurrent(Move m) {
 		Tile t = m.tile;
 		if (typeOnCard(t, "CITY") == true) {
@@ -414,7 +479,10 @@ public class Score {
 			}
 		}	
 	}
-
+	
+	/**
+	* Give the points for incompleted city at the end
+	**/
 	public void givePointsCityEnd(ArrayList<playerMeeple> playerMeeple, ArrayList<Tile> visitedTiles) {
 		sort(playerMeeple);
 		int score = numberOfCardsWithShield(visitedTiles);
@@ -422,7 +490,10 @@ public class Score {
 			pm.player.points += score;
 		}
 	}
-
+	
+	/**
+	* Give the points for city at the end
+	**/
 	public void cityEnd(Node n) {
 		ArrayList<playerMeeple> playersInCity = new ArrayList<playerMeeple>();
 		ArrayList<Tile> visitedTiles = new ArrayList<Tile>();
@@ -433,6 +504,9 @@ public class Score {
 
 	/* End CITY score */
 
+	/**
+	* Give the points for the meeples left in meeples player array
+	**/
 	public void end(Players players) {
 		Node n;
 		for (Player p : players.players) {

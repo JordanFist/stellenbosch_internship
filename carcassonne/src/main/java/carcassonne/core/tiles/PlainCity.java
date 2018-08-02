@@ -2,7 +2,7 @@ package carcassonne.core.tiles;
 
 import carcassonne.core.Tile;
 import carcassonne.core.Node;
-import carcassonne.core.directionId;
+import carcassonne.core.Direction;
 import carcassonne.core.Position;
 
 //13. city connected W to N (3)
@@ -11,10 +11,10 @@ public class PlainCity extends Tile {
 	private final String CARDS_CONTENT[] = {"CITY","CITY","CITY","CITY","CITY","CITY","PLAIN","PLAIN","PLAIN","PLAIN","PLAIN","PLAIN","PLAIN"};
 
 	public PlainCity () {
-		super(directionId.NORTH, new Position(0, 0));
+		super(Direction.NORTH, new Position(0, 0));
 		this.name = "PLAIN_CITY";
 
-		for (int i = 0; i < Tile.NUMBER_OF_DIRECTIONS; ++i) 
+		for (int i = 0; i < Direction.NUMBER_OF_DIRECTIONS; ++i) 
 			this.nodes[i] = new Node(CARDS_CONTENT[i], this);
 
 		this.nodes[0].connection(this.nodes[1]);

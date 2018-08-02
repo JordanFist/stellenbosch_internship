@@ -3,7 +3,7 @@ package carcassonne.core.tiles;
 import carcassonne.core.Tile;
 import carcassonne.core.Node;
 import carcassonne.core.Position;
-import carcassonne.core.directionId;
+import carcassonne.core.Direction;
 
 //11. city E, 3 roads elsewhere connected at center (3)
 
@@ -11,10 +11,10 @@ public class JunctionCity extends Tile {
 	private final String CARDS_CONTENT[] = {"PLAIN","ROAD","PLAIN","PLAIN","ROAD","PLAIN","PLAIN","ROAD","PLAIN","CITY","CITY","CITY","CROSSROAD"};
 
 	public JunctionCity () {
-		super(directionId.NORTH, new Position(0, 0));
+		super(Direction.NORTH, new Position(0, 0));
 		this.name = "JUNCTION_CITY";
 
-		for (int i = 0; i < Tile.NUMBER_OF_DIRECTIONS; ++i) 
+		for (int i = 0; i < Direction.NUMBER_OF_DIRECTIONS; ++i) 
 			this.nodes[i] = new Node(CARDS_CONTENT[i], this);
 
 		this.nodes[1].endRoad = true;

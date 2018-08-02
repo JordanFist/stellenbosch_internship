@@ -1,82 +1,78 @@
 package carcassonne.core;
 
-public class Place {
-	/*
-	public static int getPlace(placeId p) {
-		return p.toInt();
+enum Place {
+	NORTH_EAST(0),  //0.  {NE}
+	NORTH(1),       //1.  {N}
+	NORTH_WEST(2),  //2.  {NW}
+	WEST_NORTH(3),  //3.  {WN}
+	WEST(4),        //4.  {W}
+	WEST_SOUTH(5),  //5.  {WS}
+	SOUTH_WEST(6),  //6.  {SW}
+	SOUTH(7),       //7.  {S}
+	SOUTH_EAST(8),  //8.  {SE}
+ 	EAST_SOUTH(9),  //9.  {ES}
+ 	EAST(10),       //10. {E}
+ 	EAST_NORTH(11), //11. {EN}  
+ 	CENTER(12),     //12. {C}
+	NO_MEEPLE(13); 	    //13. special place for not placing a meeple
+	
+	public final int id;
+
+	private Place(int id) {
+		this.id = id;
+	}
+
+	public int toInt() {
+		return id;
 	}
 	
-	public static int getOppositePlace(placeId p) {
-		if (p == placeId.POS_NORTH_WEST)
-			return placeId.POS_SOUTH_WEST.toInt();
-		if (p == placeId.POS_NORTH)
-			return placeId.POS_SOUTH.toInt();
-		if (p == placeId.POS_NORTH_EAST)
-			return placeId.POS_SOUTH_EAST.toInt();
+	public String toString() {
+		return String.valueOf(id);
+	}
+
+	/**
+	* Return the value of the enumeration
+	**/
+	public int get() {
+		return this.toInt();
+	}
+
+	/**
+	* Return the opposite value of the enumeration
+	**/
+	public static int getOpposite(int place) {
+		if (place == Place.NORTH_EAST.get())
+			return Place.SOUTH_EAST.get();
+		if (place == Place.NORTH.get())
+			return Place.SOUTH.get();
+		if (place == Place.NORTH_WEST.get())
+			return Place.SOUTH_WEST.get();
 
 
-		if (p == placeId.POS_WEST_NORTH)
-			return placeId.POS_EAST_NORTH.toInt();
-		if (p == placeId.POS_WEST)
-			return placeId.POS_EAST.toInt();
-		if (p == placeId.POS_WEST_SOUTH)
-			return placeId.POS_EAST_SOUTH.toInt();
+		if (place == Place.WEST_NORTH.get())
+			return Place.EAST_NORTH.get();
+		if (place == Place.WEST.get())
+			return Place.EAST.get();
+		if (place == Place.WEST_SOUTH.get())
+			return Place.EAST_SOUTH.get();
+
+		if (place == Place.SOUTH_WEST.get())
+			return Place.NORTH_WEST.get();
+		if (place == Place.SOUTH.get())
+			return Place.NORTH.get();
+		if (place == Place.SOUTH_EAST.get())
+			return Place.NORTH_EAST.get();
 
 
-		if (p == placeId.POS_SOUTH_EAST)
-			return placeId.POS_NORTH_EAST.toInt();
-		if (p == placeId.POS_SOUTH)
-			return placeId.POS_NORTH.toInt();
-		if (p == placeId.POS_SOUTH_WEST)
-			return placeId.POS_NORTH_WEST.toInt();
-
-
-		if (p == placeId.POS_EAST_SOUTH)
-			return placeId.POS_WEST_SOUTH.toInt();
-		if (p == placeId.POS_EAST)
-			return placeId.POS_WEST.toInt();
-		if (p == placeId.POS_EAST_NORTH)
-			return placeId.POS_WEST_NORTH.toInt();
+		if (place == Place.EAST_SOUTH.get())
+			return Place.WEST_SOUTH.get();
+		if (place == Place.EAST.get())
+			return Place.WEST.get();
+		if (place == Place.EAST_NORTH.get())
+			return Place.WEST_NORTH.get();
 		else {
-			System.out.println("ERROR in place functions");
-			return -1;		
-		}
-	}*/
-
-	public static int getOppositePlace(int p) {
-		if (p == 0)
-			return 8;
-		if (p == 1)
-			return 7;
-		if (p == 2)
-			return 6;
-
-
-		if (p == 3)
-			return 11;
-		if (p == 4)
-			return 10;
-		if (p == 5)
-			return 9;
-
-
-		if (p == 6)
-			return 2;
-		if (p == 7)
-			return 1;
-		if (p == 8)
-			return 0;
-
-
-		if (p == 9)
-			return 5;
-		if (p == 10)
-			return 4;
-		if (p == 11)
-			return 3;
-		else {
-			System.out.println("ERROR in place functions");
-			return -1;		
+			System.out.println("ERROR in getOpposite Place function");
+			return -1;
 		}
 	}
 }

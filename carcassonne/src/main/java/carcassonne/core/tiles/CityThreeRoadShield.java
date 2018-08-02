@@ -3,7 +3,7 @@ package carcassonne.core.tiles;
 import carcassonne.core.Tile;
 import carcassonne.core.Node;
 import carcassonne.core.Position;
-import carcassonne.core.directionId;
+import carcassonne.core.Direction;
 
 //18. road S, connected city elsewhere, shield (2)
 
@@ -11,11 +11,11 @@ public class CityThreeRoadShield extends Tile {
 	private final String CARDS_CONTENT[] = {"CITY","CITY","CITY","CITY","CITY","CITY","PLAIN","ROAD","PLAIN","CITY","CITY","CITY","CITY"};
 
 	public CityThreeRoadShield () {
-		super(directionId.NORTH, new Position(0, 0));
+		super(Direction.NORTH, new Position(0, 0));
 		this.name = "CITY_THREE_ROAD_SHIELD";
 		this.shield = true;
 
-		for (int i = 0; i < Tile.NUMBER_OF_DIRECTIONS; ++i) 
+		for (int i = 0; i < Direction.NUMBER_OF_DIRECTIONS; ++i) 
 			this.nodes[i] = new Node(CARDS_CONTENT[i], this);
 
 		this.nodes[7].endRoad = true;

@@ -32,7 +32,7 @@ public class Client {
 
 	public Move searchValidPositionCard(setTile s, Move m) {
 		for (int i = 0; i < s.tiles.size(); ++i) {
-			for (directionId dir : directionId.values()) {
+			for (Direction dir : Direction.values()) {
 				m.tile.pos = s.tiles.get(i).pos.neighbourPosition(dir);
 				if (m.tile.isEmptyTile(s.computeNeighbour(s.tiles.get(i), dir)) == true && s.isConnectable(m.tile) == true) {
 					return m;
@@ -43,12 +43,12 @@ public class Client {
 	}
 
 	public Move clientMove(setTile s, Tile tile, Player p) {
-		Move m = new Move(p, tile, placeId.NO_MEEPLE);
+		Move m = new Move(p, tile, Place.NO_MEEPLE);
 		m = searchValidPositionCard(s, m);
 		
 		if (p.meeples.size() < Player.NUMBER_OF_MEEPLES) {
-			for (placeId place : placeId.values()) {
-				if (place != placeId.NO_MEEPLE) {
+			for (Place place : Place.values()) {
+				if (place != Place.NO_MEEPLE) {
 					m.place = place;
 					if (searchValidPositionMeeple(s, m) == true) {
 						return m;
@@ -56,7 +56,7 @@ public class Client {
 				}
 			}
 		}
-		m.place = placeId.NO_MEEPLE;
+		m.place = Place.NO_MEEPLE;
 		return m;
 	}
 }

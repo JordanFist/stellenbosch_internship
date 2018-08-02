@@ -20,6 +20,9 @@ public class Node {
 		this.meepleOwner = null;
 	}
 
+	/**
+	* Connect 2 nodes and add them in neighbourNodes
+	**/
 	public void connection(Node n) {
 		if (neighbourNodes.size() < CONNEXIONS_PER_SIDE && n.neighbourNodes.size() < CONNEXIONS_PER_SIDE) {
 			neighbourNodes.add(n);
@@ -28,6 +31,9 @@ public class Node {
 			System.out.println("ERROR neighbourNodes is full");
 	}	
 	
+	/**
+	* Disconnect 2 nodes and remove them from neighbourNodes
+	**/
 	public void disconnection(Node n) {
 		for (int i = 0; i < neighbourNodes.size(); ++i) {
 			if (neighbourNodes.get(i) == n)
@@ -39,6 +45,9 @@ public class Node {
 		}
 	}
 
+	/**
+	* Return true if there is a meeple in the area
+	**/
 	public boolean isMeepleInArea() {
 		Node check;
 		Stack<Node> stack = new Stack<Node>();
@@ -47,10 +56,10 @@ public class Node {
 		visited.add(this);
 		while (stack.isEmpty() == false) {
 			check = stack.remove(0);
-			if (check != null && check.meepleOwner != null)
+			if (check.meepleOwner != null)
 				return true;
 			for (int i = 0; i < check.neighbourNodes.size(); ++i) {
-				if (check.neighbourNodes.get(i) != null && visited.contains(check.neighbourNodes.get(i)) == false) {
+				if (visited.contains(check.neighbourNodes.get(i)) == false) {
 					stack.add(check.neighbourNodes.get(i));
 					visited.add(check.neighbourNodes.get(i));
 				}
@@ -58,53 +67,4 @@ public class Node {
 		}
 		return false;
 	}
-	/*
-	public static void main(String[] args) {
-		Player p = new Player(0);
-		setTile s = new setTile();
-		
-		for (int i = 0; i < 12; ++i) {
-			for (int j = 0; j < s.tiles.get(0).nodes[i].neighbourNodes.size(); ++j) {
-				System.out.println(s.tiles.get(0).nodes[i].neighbourNodes.get(j));
-			}
-			System.out.println();
-		} System.out.println("test");
-
-		RoadStraightCity t1 = new RoadStraightCity();	
-		t1.pos = new Position(0, 1);
-		s.addSetTile(t1);
-	
-		RoadStraightCity t2 = new RoadStraightCity();	
-		t2.pos = new Position(1, 0);
-		t2.rotation(directionId.SOUTH);
-		t2.dir = directionId.SOUTH;
-		s.addSetTile(t2);
-	
-		RoadStraightCity t3 = new RoadStraightCity();	
-		t3.pos = new Position(1, 1);
-		t3.rotation(directionId.SOUTH);
-		t3.dir = directionId.SOUTH;
-		s.addSetTile(t3);
-		
-		MonasteryRoad t4 = new MonasteryRoad();
-		t4.pos = new Position(0, -1);
-		t4.rotation(directionId.SOUTH);
-		t4.dir = directionId.SOUTH;	
-		s.addSetTile(t4);
-		
-		s.tiles.get(1).nodes[11].meepleOwner = p;
-		//System.out.println(s.tiles.get(3).nodes[5].isMeepleInArea());
-
-		s.removeSetTile(t1);
-		s.removeSetTile(t2);
-		s.removeSetTile(t3);
-		s.removeSetTile(t4);
-
-		for (int i = 0; i < 12; ++i) {
-			for (int j = 0; j < s.tiles.get(0).nodes[i].neighbourNodes.size(); ++j) {
-				System.out.println(s.tiles.get(0).nodes[i].neighbourNodes.get(j));
-			}
-			System.out.println();
-		}
-	}*/
 }

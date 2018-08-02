@@ -3,7 +3,7 @@ package carcassonne.core.tiles;
 import carcassonne.core.Tile;
 import carcassonne.core.Node;
 import carcassonne.core.Position;
-import carcassonne.core.directionId;
+import carcassonne.core.Direction;
 
 //8. plain connected W to N, disconnected but jointive cities E and S (2)
 
@@ -11,10 +11,10 @@ public class PlainTwoCities extends Tile {
 	private final String CARDS_CONTENT[] = {"PLAIN","PLAIN","PLAIN","PLAIN","PLAIN","PLAIN","CITY","CITY","CITY","CITY","CITY","CITY","PLAIN"};
 
 	public PlainTwoCities () {
-		super(directionId.NORTH, new Position(0, 0));
+		super(Direction.NORTH, new Position(0, 0));
 		this.name = "PLAIN_TWO_CITIES";
 
-		for (int i = 0; i < Tile.NUMBER_OF_DIRECTIONS; ++i) 
+		for (int i = 0; i < Direction.NUMBER_OF_DIRECTIONS; ++i) 
 			this.nodes[i] = new Node(CARDS_CONTENT[i], this);
 
 		this.nodes[0].connection(this.nodes[1]);
