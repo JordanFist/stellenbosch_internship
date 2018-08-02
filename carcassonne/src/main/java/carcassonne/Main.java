@@ -47,13 +47,6 @@ public class Main {
 		
 		score.end(players);
 		players.displayScore();
-	
-		
-
-		for (Player p : players.players) {
-				System.out.println(p.meeples.size());
-		}
-		
 
 		/* End of the game loop */
 	}
