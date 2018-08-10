@@ -44,7 +44,7 @@ public class Deck {
 	public void fill() {
 		int j = 0;
 		for (int i = 0; i < 1; ++i) {
-			pile.add(new CityAllSides());
+			pile.add(new CityAllSidesShield());
 			pile.add(new CityTunnel());
 			pile.add(new CityThreeShield());
 			pile.add(new CityThreeRoad());

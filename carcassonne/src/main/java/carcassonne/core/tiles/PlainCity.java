@@ -12,6 +12,7 @@ public class PlainCity extends Tile {
 
 	public PlainCity () {
 		super(Direction.NORTH, new Position(0, 0));
+		this.id = 13;
 		this.name = "PLAIN_CITY";
 
 		for (int i = 0; i < Direction.NUMBER_OF_DIRECTIONS; ++i) 

@@ -9,6 +9,7 @@ public class Node {
 
 	public String landType;
 	public Player meepleOwner;
+	public int round;
 	public boolean endRoad = false;
 	public boolean plainNextToCity = true;
 	public Tile sourceTile;

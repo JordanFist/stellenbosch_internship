@@ -12,6 +12,7 @@ public class PlainCityRoad extends Tile {
 
 	public PlainCityRoad () {
 		super(Direction.NORTH, new Position(0, 0));
+		this.id = 15;
 		this.name = "PLAN_CITY_ROAD";
 
 		for (int i = 0; i < Direction.NUMBER_OF_DIRECTIONS; ++i) 

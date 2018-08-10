@@ -1,8 +1,9 @@
 package carcassonne.core;
+
 import java.util.ArrayList;
 
-//import carcassonne.core.tiles.RoadStraightCity;
-import carcassonne.core.tiles.*;
+import carcassonne.ui.Window;
+import carcassonne.core.tiles.RoadStraightCity;
 
 public class setTile {
 	public static ArrayList<Tile> tiles = new ArrayList<Tile>();
@@ -142,12 +143,14 @@ public class setTile {
 	/**
 	* Put the tile and meeple on the board and update the score
 	**/
-	public void update(Move m, Score score) {
-		if (m.place != Place.NO_MEEPLE) 
+	public void update(Move m, Score score, int round, Window window) {
+		if (m.place != Place.NO_MEEPLE) {
 			m.tile.nodes[m.place.get()].meepleOwner = m.player;
+			m.tile.nodes[m.place.get()].round = round;
+		}
 		addSetTile(m.tile);
-		score.abbeyCurrent(m);
-		score.roadCurrent(m);
-		score.cityCurrent(m);
+		score.abbeyCurrent(m, window);
+		score.roadCurrent(m, window);
+		score.cityCurrent(m, window);
 	}	
 }

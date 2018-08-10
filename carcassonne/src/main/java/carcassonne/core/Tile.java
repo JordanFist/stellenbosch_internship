@@ -1,6 +1,7 @@
 package carcassonne.core;
 
 public class Tile {
+	public int id;
 	public String name;
 	public boolean shield = false;
 	public Direction dir = Direction.NORTH;

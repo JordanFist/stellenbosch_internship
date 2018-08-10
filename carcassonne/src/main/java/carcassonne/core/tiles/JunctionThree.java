@@ -12,6 +12,7 @@ public class JunctionThree extends Tile {
 
 	public JunctionThree () {
 		super(Direction.NORTH, new Position(0, 0));
+		this.id = 22;
 		this.name = "JUNCTION_THREE";
 
 		for (int i = 0; i < Direction.NUMBER_OF_DIRECTIONS; ++i) 

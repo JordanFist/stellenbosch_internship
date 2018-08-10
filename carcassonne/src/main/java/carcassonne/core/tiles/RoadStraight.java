@@ -12,6 +12,7 @@ public class RoadStraight extends Tile {
 
 	public RoadStraight () {
 		super(Direction.NORTH, new Position(0, 0));
+		this.id = 20;
 		this.name = "ROAD_STRAIGHT";
 
 		for (int i = 0; i < Direction.NUMBER_OF_DIRECTIONS; ++i) 

@@ -1,6 +1,6 @@
 package carcassonne.core;
 
-enum Place {
+public enum Place {
 	NORTH_EAST(0),  // {NE}
 	NORTH(1),       // {N}
 	NORTH_WEST(2),  // {NW}
@@ -73,6 +73,44 @@ enum Place {
 		else {
 			System.out.println("ERROR in getOpposite Place function");
 			return -1;
+		}
+	}
+
+	public Position meeplePosition(int width, int height) {
+		if (this == Place.NORTH_EAST)
+			return new Position(5 * (width / 7), 0);
+		if (this == Place.NORTH)
+			return new Position(3 * (width / 7), 0);
+		if (this == Place.NORTH_WEST)
+			return new Position(1 * (width / 7), 0);
+
+
+		if (this == Place.WEST_NORTH)
+			return new Position(0 * (width / 7), 1 * (height / 7));
+		if (this == Place.WEST)
+			return new Position(0 * (width / 7), 3 * (height / 7));
+		if (this == Place.WEST_SOUTH)
+			return new Position(0 * (width / 7), 5 * (height / 7));
+
+		if (this == Place.SOUTH_WEST)
+			return new Position(1 * (width / 7), 6 * (height / 7));
+		if (this == Place.SOUTH)
+			return new Position(3 * (width / 7), 6 * (height / 7));
+		if (this == Place.SOUTH_EAST)
+			return new Position(5 * (width / 7), 6 * (height / 7));
+
+
+		if (this == Place.EAST_SOUTH)
+			return new Position(6 * (width / 7), 5 * (height / 7));
+		if (this == Place.EAST)
+			return new Position(6 * (width / 7), 3 * (height / 7));
+		if (this == Place.EAST_NORTH)
+			return new Position(6 * (width / 7), 1 * (height / 7));
+		if (this == Place.CENTER)
+			return new Position(3 * (width / 7), 3 * (height / 7));
+		else {
+			System.out.println("ERROR in meeplePosition Place function");
+			return new Position(0, 0);
 		}
 	}
 }

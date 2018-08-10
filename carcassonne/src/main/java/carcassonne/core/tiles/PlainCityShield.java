@@ -11,6 +11,7 @@ public class PlainCityShield extends Tile {
 	private final String CARDS_CONTENT[] = {"CITY","CITY","CITY","CITY","CITY","CITY","PLAIN","PLAIN","PLAIN","PLAIN","PLAIN","PLAIN","PLAIN"};
 	public PlainCityShield () {
 		super(Direction.NORTH, new Position(0, 0));
+		this.id = 12;
 		this.name = "PLAIN_CITY_SHIELD";
 		this.shield = true;
 

@@ -12,6 +12,7 @@ public class CityThreeRoad extends Tile {
 
 	public CityThreeRoad () {
 		super(Direction.NORTH, new Position(0, 0));
+		this.id = 19;
 		this.name = "CITY_THREE_ROAD";
 
 		for (int i = 0; i < Direction.NUMBER_OF_DIRECTIONS; ++i) 

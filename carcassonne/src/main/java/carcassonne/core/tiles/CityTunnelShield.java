@@ -12,6 +12,7 @@ public class CityTunnelShield extends Tile {
 	
 	public CityTunnelShield () {
 		super(Direction.NORTH, new Position(0, 0));
+		this.id = 5;
 		this.name = "CITY_TUNNEL_SHIELD";
 		this.shield = true;
 		

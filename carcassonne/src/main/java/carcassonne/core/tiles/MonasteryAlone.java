@@ -12,6 +12,7 @@ public class MonasteryAlone extends Tile {
 
 	public MonasteryAlone () {
 		super(Direction.NORTH, new Position(0, 0));
+		this.id = 1;
 		this.name = "MONASTERY_ALONE";
 
 		for (int i = 0; i < Direction.NUMBER_OF_DIRECTIONS; ++i) 

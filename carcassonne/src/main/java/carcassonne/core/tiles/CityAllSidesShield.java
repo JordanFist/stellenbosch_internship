@@ -7,12 +7,14 @@ import carcassonne.core.Direction;
 
 //2. connected cities on all sides (1)
 
-public class CityAllSides extends Tile {
+public class CityAllSidesShield extends Tile {
 	private final String CARDS_CONTENT[] = {"CITY","CITY","CITY","CITY","CITY","CITY","CITY","CITY","CITY","CITY","CITY","CITY","CITY"};
 
-	public CityAllSides () {
+	public CityAllSidesShield () {
 		super(Direction.NORTH, new Position(0, 0));
+		this.id = 2;
 		this.name = "CITY_ALL_SIDES";
+		this.shield = true;
 
 		for (int i = 0; i < Direction.NUMBER_OF_DIRECTIONS; ++i) 
 			this.nodes[i] = new Node(CARDS_CONTENT[i], this);

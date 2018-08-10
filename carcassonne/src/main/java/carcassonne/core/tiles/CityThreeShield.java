@@ -12,6 +12,7 @@ public class CityThreeShield extends Tile {
 
 	public CityThreeShield () {
 		super(Direction.NORTH, new Position(0, 0));
+		this.id = 16;
 		this.name = "CITY_THREE_SHIELD";
 		this.shield = true;
 

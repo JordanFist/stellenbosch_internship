@@ -12,6 +12,7 @@ public class RoadTurn extends Tile {
 
 	public RoadTurn () {
 		super(Direction.NORTH, new Position(0, 0));
+		this.id = 21;
 		this.name = "ROAD_TURN";
 
 		for (int i = 0; i < Direction.NUMBER_OF_DIRECTIONS; ++i) 
