@@ -1,25 +1,17 @@
 apply plugin: 'java'
 
-test.scanForTestClasses = false
-// FIX ERRORS by specifying javac path: https://stackoverflow.com/questions/18487406/how-do-i-tell-gradle-to-use-specific-jdk-version
+repositories {
+	mavenCentral()
+}
 
-// uncomment and add sources if external libraries are needed
-// buildscript {
-//   repositories {
-//     mavenCentral()
-//   }
-// }
+dependencies {
+	// https://mvnrepository.com/artifact/junit/junit
+	testCompile group: 'junit', name: 'junit', version: '4.12'
+}
 
-//dependencies {	
-	//compile project('carcassonne')
-	//testCompile project(path:'carcassonne')
-   	//testCompile "junit:junit:4.12"
-//}
-
-
-
-//repositories {
-   //mavenCentral()
-   //mavenLocal()
- //}
+test {
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
+}
 
