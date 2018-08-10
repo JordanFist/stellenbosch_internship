@@ -1,6 +1,7 @@
 package carcassonne;
 
 import carcassonne.core.*;
+import carcassonne.ui.Window;
 
 public class Main {
 
@@ -18,6 +19,7 @@ public class Main {
 		setTile board = new setTile();
 		Client client = new Client();
 		Score score = new Score();
+		Window window = new Window();
 		Move playerMove;
 		Player playerTurn = players.first();
 		Tile tile;
@@ -29,23 +31,25 @@ public class Main {
 		
 		while (deck.isEmpty() == false && players.remaining() > 1) {
 			System.out.printf("================= ROUND : %d =================%n", round);
-			++round;
 			tile = deck.drawCard();
 			
 			if (board.isPlayable(tile) == true) {
 				playerMove = client.clientMove(board, tile, playerTurn);
 				
 				if (board.validMove(playerMove) == true) {
-					board.update(playerMove, score);
+					board.update(playerMove, score, round, window);
+					window.update(playerMove);
+					//window.Wait(5);
 					display(playerMove, playerTurn);
 				} else
 					playerTurn.eject();
 				playerTurn = players.computeNext(playerTurn); 	
 			} else 
 				System.out.printf("%s is unplayable\n", tile.name);
+			++round;
 		}
 		
-		score.end(players);
+		score.end(players, window);
 		players.displayScore();
 
 		/* End of the game loop */
