@@ -141,16 +141,13 @@ public class setTile {
 	}
 
 	/**
-	* Put the tile and meeple on the board and update the score
+	* Put the tile and meeple on the board
 	**/
-	public void update(Move m, Score score, int round, Window window) {
+	public void update(Move m, int round) {
 		if (m.place != Place.NO_MEEPLE) {
 			m.tile.nodes[m.place.get()].meepleOwner = m.player;
 			m.tile.nodes[m.place.get()].round = round;
 		}
 		addSetTile(m.tile);
-		score.abbeyCurrent(m, window);
-		score.roadCurrent(m, window);
-		score.cityCurrent(m, window);
 	}	
 }

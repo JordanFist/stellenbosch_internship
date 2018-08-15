@@ -27,6 +27,6 @@ public class CityTunnel extends Tile {
 		this.nodes[9].connection(this.nodes[10]);
 		this.nodes[10].connection(this.nodes[11]);
 		this.nodes[11].connection(this.nodes[12]);
-		this.nodes[0].connection(this.nodes[5]);
+		this.nodes[12].connection(this.nodes[5]);
 	}
 }

@@ -1,7 +1,6 @@
 package carcassonne.core;
 
 import java.util.ArrayList;
-import carcassonne.ui.Window;
 
 public class Player {
 	public static final int NUMBER_OF_MEEPLES = 8;
@@ -9,6 +8,7 @@ public class Player {
 	public int id;
 	public boolean isAlive;
 	public ArrayList<Node> meeples = new ArrayList<Node>();
+	public ArrayList<Node> meeplesRemoveWindow = new ArrayList<Node>();
 	public int points;
 
 	public Player(int id) {
@@ -20,10 +20,10 @@ public class Player {
 	/**
 	* Remove a meeple in the meeples array
 	**/
-	public void giveBackMeeple(Node n, Window window) {
+	public void giveBackMeeple(Node n) {
 		n.meepleOwner = null;
 		meeples.remove(n);
-		window.removeMeeple(n.round);
+		meeplesRemoveWindow.add(n);
 		System.out.printf("player %d gets back a meeple, he has now %d meeple(s)\n", id, NUMBER_OF_MEEPLES - meeples.size());
 	}
 	

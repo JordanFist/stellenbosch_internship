@@ -1,6 +1,7 @@
 package carcassonne.core;
 
 import java.util.ArrayList;
+import carcassonne.ui.Window;
 
 public class Players {
 	int numberOfPlayers;
@@ -17,6 +18,14 @@ public class Players {
 	**/
 	public Player first() {
 		return (players.get(0));
+	}
+
+	public void removeMeeples(Window window) {
+		for (Player p : players) {
+			for (Node n : p.meeplesRemoveWindow) 
+				window.removeMeeple(n.round);	
+			p.meeplesRemoveWindow = new ArrayList<Node>();
+		}
 	}
 
 	public int remaining() {

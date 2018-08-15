@@ -6,7 +6,7 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.awt.image.BufferedImage;
 
-public class SpriteStore {
+public class spriteStore {
 	public static final int NUMBER_OF_TILE_SPRITES = 24;
 	public static final int NUMBER_OF_MEEPLE_SPRITES = 5;
 	public static final String TILE_LOCATIONS = "/home/23242965/Desktop/trainee/stellenbosch-internship/carcassonne/src/main/resources/carcassonne/tiles/tile";
@@ -14,7 +14,7 @@ public class SpriteStore {
 	
 	public ArrayList<Sprite> sprites;
 
-	public SpriteStore() {
+	public spriteStore() {
         	sprites = new ArrayList<Sprite>();
     	}
 
@@ -41,15 +41,4 @@ public class SpriteStore {
        		sprites.add(sprite);
         	return true;
 	}
-	/*
-	public Sprite getSprite(String ref) {
-      		Sprite sprite = sprites.get(ref);
-      	  	if (sprite == null) {
-            		if (loadSprite(ref)) {
-                		return sprites.get(ref);
-            		}
-        	}
-        	return sprite;
-    	}*/
-
 }

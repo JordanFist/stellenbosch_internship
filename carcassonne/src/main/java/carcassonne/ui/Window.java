@@ -5,38 +5,23 @@ import carcassonne.core.Position;
 import carcassonne.core.Move;
 import carcassonne.core.Place;
 import carcassonne.core.Player;
+import carcassonne.core.Tile;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
 import java.awt.Color;
-import java.awt.GridLayout;
-import java.io.IOException;
-import java.awt.Image;
-import java.io.File;
-import javax.imageio.ImageIO;
-import java.util.ArrayList;
-import java.awt.Graphics;
-
-class Panel {
-	tileDrawable tile;
-	meepleDrawable meeple;
-
-	public Panel(tileDrawable tile, meepleDrawable meeple) {
-		this.tile = tile;	
-		this.meeple = meeple;	
-	}
-}
 
 public class Window extends JFrame {
-	public Background background = new Background();
-	public SpriteStore tileSprites = new SpriteStore();
-	public SpriteStore meepleSprites = new SpriteStore();
+	public static final int TILE_WIDTH = 70;
+	public static final int TILE_HEIGHT = 70;
+	public static final int MEEPLE_WIDTH = 10;
+	public static final int MEEPLE_HEIGHT = 10;
 
-	public ArrayList<Panel> Panels = new ArrayList<Panel>();
-	
+	public Background background = new Background(new Color(245, 245, 220));
+	public nextTileDrawable nextTile = new nextTileDrawable(this);
+	public spriteStore tileSprites = new spriteStore();
+	public spriteStore meepleSprites = new spriteStore();
+	public panelStore drawableStore = new panelStore();
+	public Camera camera = new Camera(drawableStore);
 
 	public Window() {
    		this.setTitle("Carcassonne");
@@ -46,12 +31,13 @@ public class Window extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		this.setContentPane(background);
 		background.setLayout(null);
-
+		background.add(nextTile).setBounds(getWidth() - 100, getHeight() - 100, 100, 100);
+		this.addKeyListener(camera);
 
 		tileSprites.loadTiles();
 		meepleSprites.loadMeeples();
+
 		addTile(3, new Position(0, 0), Direction.NORTH);
-		
 	}
 
 	public void update(Move m) {
@@ -59,42 +45,43 @@ public class Window extends JFrame {
 		addMeeple(m.place, m.player);
 	}
 
+	public void changeCardToPlay(Tile t) {
+		nextTile.setImage(tileSprites.sprites.get(t.id).getImage());
+		nextTile.repaint();
+	}
+
 	public void addTile(int id, Position pos, Direction dir) {
-		tileDrawable panel = new tileDrawable(this, pos.x, -pos.y, dir);
-		int width = 86;
-		int height = 86;		
-		int X = getWidth() / 2 - width / 2 + width * pos.x;
-		int Y = (getHeight() - getInsets().top) / 2 - height / 2 - height * pos.y;
-		
-		background.add(panel).setBounds(X, Y, width, height);
-		Panels.add(new Panel(panel, null));
-		addSpriteTile(panel, id);
+		int X = getWidth() / 2 - TILE_WIDTH / 2 + TILE_WIDTH * pos.x + camera.getX();
+		int Y = (getHeight() - getInsets().top) / 2 - TILE_HEIGHT / 2 - TILE_HEIGHT * pos.y + camera.getY();
+
+		tileDrawable tile = new tileDrawable(this, camera, pos.x, pos.y, dir);
+		background.add(tile).setBounds(X, Y, TILE_WIDTH, TILE_HEIGHT);
+
+		drawableStore.add(tile, null);
+		addSpriteTile(tile, id);
 	}
 
 	public void removeTile() {
-		
+		//TODO
 	}
 
 	public void addMeeple(Place place, Player player) {
 		if (place != Place.NO_MEEPLE) {
-			int i = Panels.size() - 1;
-			tileDrawable tilePanel = Panels.get(i).tile;
+			tileDrawable tile = drawableStore.getLast().tile;
+			Position pos = place.meeplePosition(tile.getWidth(), tile.getHeight());
 
-			Position pos = place.meeplePosition(tilePanel.getWidth(), tilePanel.getHeight());
-			meepleDrawable meeplePanel = new meepleDrawable(tilePanel, pos.x, pos.y);
+			meepleDrawable meeple = new meepleDrawable(tile, pos.x, pos.y);
+			tile.add(meeple).setBounds(pos.x, pos.y, MEEPLE_WIDTH, MEEPLE_HEIGHT);
 
-			int width = 15;
-			int height = 15;
-		
-			tilePanel.add(meeplePanel).setBounds(pos.x, pos.y, width, height);
-			Panels.get(i).meeple = meeplePanel;
-			addSpriteMeeple(meeplePanel, player.id);
+			drawableStore.change(drawableStore.getLast(), null, meeple);
+			addSpriteMeeple(meeple, player.id);
 		}		
 	}
 
 	public void removeMeeple(int round) {
-		//Panels.get(round).tile.setImage(null);
-		//Panels.get(round).tile.repaint();
+		drawableStore.getPanel(round).meeple.setImage(null);
+		drawableStore.getPanel(round).meeple.repaint();
+		drawableStore.getPanel(round).tile.repaint();
 	}
 
 	public void Wait(int seconde) {
@@ -105,13 +92,13 @@ public class Window extends JFrame {
       		}
 	}
 
-	public void addSpriteMeeple(meepleDrawable panel, int i) {
-		panel.setImage(meepleSprites.sprites.get(i).getImage());
-		panel.repaint();
+	public void addSpriteMeeple(meepleDrawable meeple, int i) {
+		meeple.setImage(meepleSprites.sprites.get(i).getImage());
+		meeple.repaint();
 	}
 
-	public void addSpriteTile(tileDrawable panel, int i) {
-		panel.setImage(tileSprites.sprites.get(i).getImage());
-		panel.repaint();
+	public void addSpriteTile(tileDrawable tile, int i) {
+		tile.setImage(tileSprites.sprites.get(i).getImage());
+		tile.repaint();
 	}
 }

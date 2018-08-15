@@ -24,32 +24,40 @@ public class Main {
 		Player playerTurn = players.first();
 		Tile tile;
 		int round = 1;
+		int roundWithException = 1;
 
 		/* End of initialisation */
 		
 		/* Beginning of the game Loop */
 		
 		while (deck.isEmpty() == false && players.remaining() > 1) {
-			System.out.printf("================= ROUND : %d =================%n", round);
+			System.out.printf("%n==================== ROUND : %d ====================%n", round);
 			tile = deck.drawCard();
+			window.changeCardToPlay(tile);
+			window.Wait(5);
 			
 			if (board.isPlayable(tile) == true) {
 				playerMove = client.clientMove(board, tile, playerTurn);
 				
 				if (board.validMove(playerMove) == true) {
-					board.update(playerMove, score, round, window);
+					board.update(playerMove, roundWithException);
 					window.update(playerMove);
-					//window.Wait(5);
 					display(playerMove, playerTurn);
+					score.update(playerMove, board);
 				} else
 					playerTurn.eject();
 				playerTurn = players.computeNext(playerTurn); 	
-			} else 
+			} else {
 				System.out.printf("%s is unplayable\n", tile.name);
+				--roundWithException;
+			}
+			players.removeMeeples(window);
 			++round;
+			++roundWithException;
+			
 		}
 		
-		score.end(players, window);
+		score.updateEnd(board, players);
 		players.displayScore();
 
 		/* End of the game loop */
