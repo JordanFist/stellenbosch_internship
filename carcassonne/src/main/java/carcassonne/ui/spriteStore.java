@@ -5,12 +5,13 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.awt.image.BufferedImage;
+import java.net.URL;
 
 public class spriteStore {
 	public static final int NUMBER_OF_TILE_SPRITES = 24;
 	public static final int NUMBER_OF_MEEPLE_SPRITES = 5;
-	public static final String TILE_LOCATIONS = "/home/23242965/Desktop/trainee/stellenbosch-internship/carcassonne/src/main/resources/carcassonne/tiles/tile";
-	public static final String MEEPLE_LOCATIONS = "/home/23242965/Desktop/trainee/stellenbosch-internship/carcassonne/src/main/resources/carcassonne/meeples/meeple";
+	public static final String TILE_LOCATIONS = "../../../resources/main/carcassonne/tiles/tile";
+	public static final String MEEPLE_LOCATIONS = "../../../resources/main/carcassonne/meeples/meeple";
 	
 	public ArrayList<Sprite> sprites;
 
@@ -22,7 +23,7 @@ public class spriteStore {
 		for (int i = 0; i < NUMBER_OF_TILE_SPRITES; ++i)
 			loadSprite(TILE_LOCATIONS + i + ".jpg");
 	}
-
+	
 	public void loadMeeples() {
 		for (int i = 0; i < NUMBER_OF_MEEPLE_SPRITES; ++i)
 			loadSprite(MEEPLE_LOCATIONS + i + ".png");
